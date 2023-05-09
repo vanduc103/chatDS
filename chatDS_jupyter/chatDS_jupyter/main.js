@@ -4,7 +4,7 @@ define([
     'base/js/events',
     'base/js/dialog'
 ], function (Jupyter, $, events, dialog) {
-    
+    var base_url = "http://147.47.236.89:38500/api/v1"
     console.log("loading ChatDS")
     var all_cells = Jupyter.notebook.get_cells();
     var mx = 0;
@@ -25,6 +25,13 @@ define([
             last_cell_index = 1;
         return last_cell_index;
     }
+    var removeAll = function () {
+        var cells = Jupyter.notebook.get_cells();
+        localStorage.setItem("REMOVE_ALL", "True");
+        for (var i = 0; i < cells.length; i++) {
+            Jupyter.notebook.delete_cell(cells[i].index);
+        }
+    }
     var initWorkingSpace = function (content) {
         removeAll();
         var last_cell_index = get_last_cell_index();
@@ -44,7 +51,7 @@ define([
     }
     var load_init_prompt = function () {
         $.ajax({
-            url: 'http://147.47.236.89:38500/api/v1/prompt_init',
+            url: base_url + '/prompt_init',
             method: 'POST',
         }).done(initWorkingSpace);
     }
@@ -156,12 +163,24 @@ define([
         }
     })
 
-    var removeAll = function () {
-        var cells = Jupyter.notebook.get_cells();
-        localStorage.setItem("REMOVE_ALL", "True");
-        for (var i = 0; i < cells.length; i++) {
-            Jupyter.notebook.delete_cell(cells[i].index);
+    var submitPrompt = function(prompt_id, prompt) {
+        var content = 
+        {
+            'prompt': {
+                'prompt_id': prompt_id,
+                'prompt': prompt
+            }
         }
+        content = JSON.stringify(content)
+        $.ajax({
+            url: base_url + '/code_generate',
+            method: 'POST',
+            contentType: 'application/json',
+            dataType: 'json',
+            data: content
+        }).done(function(res) {
+            console.log(res)
+        })
     }
 
     events.on('delete.Cell', function(event, data) {
@@ -202,27 +221,28 @@ define([
 
     events.on('rendered.MarkdownCell', function(event, data) {
         var cell_id = data.cell.cell_id;
-        // setTimeout(function() {
-        //     var even2 = localStorage.getItem("NEW_PROMPT_CELL")
-        //     if (even2 != cell_id) {
-        //         dialog.modal({
-        //             title: 'Confirm Action',
-        //             body: "If you modified this prompt, all following code will be affected. Are you sure you want to perform this action?",
-        //             buttons: {
-        //                 'Cancel' : {},
-        //                 'OK': {
-        //                     'class': 'btn-primary',
-        //                     'click': function() {
-                                
-        //                     }
-        //                 }
-        //             }
-        //         });
-        //     }
-        //     setTimeout(function() {
-        //         localStorage.removeItem('NEW_PROMPT_CELL')
-        //     }, 100)
-        // }, 100)
+        var content = data.cell.get_text();
+        setTimeout(function() {
+            var even2 = localStorage.getItem("NEW_PROMPT_CELL")
+            if (even2 != cell_id) {
+                dialog.modal({
+                    title: 'Confirm Action',
+                    body: "If you modified this prompt, all following code will be affected. Are you sure you want to perform this action?",
+                    buttons: {
+                        'Cancel' : {},
+                        'OK': {
+                            'class': 'btn-primary',
+                            'click': function() {
+                                submitPrompt(0, content);
+                            }
+                        }
+                    }
+                });
+            }
+            setTimeout(function() {
+                localStorage.removeItem('NEW_PROMPT_CELL')
+            }, 100)
+        }, 100)
         
     })
 

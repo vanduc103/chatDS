@@ -151,7 +151,7 @@ class CodeGenerationAPI(Resource):
         prompt_id = user_prompt['prompt_id']
         prompt_content = user_prompt['prompt']
         
-        need_dataset_metadata = True
+        need_dataset_metadata = False
         need_data_values = False
         dataset_metadata = '''Dataset Information:
         '''

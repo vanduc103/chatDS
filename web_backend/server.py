@@ -128,7 +128,7 @@ class PromptInitAPI(Resource):
             prompt = instruction + problem + prompt_content + ans
             
             #out = response(prompt)
-            out = "print('test code')"
+            out = "print('test code " + str(idx) + "')"
             res.append({"prompt_id": idx, "prompt": prompt_content.replace("Q:",""),
                    "code": out})
             # update prompt list
@@ -141,13 +141,13 @@ class CodeGenerationAPI(Resource):
         super(CodeGenerationAPI, self).__init__()
         self.reqparse = reqparse.RequestParser()
         #self.reqparse.add_argument("prompt_id", type=int, location='json', default=0)
-        self.reqparse.add_argument("prompt", type=json, required=True)
+        self.reqparse.add_argument("prompt", type=dict, required=True)
 
     def post(self):
         """Code generation for a user prompt
         """
         args = self.reqparse.parse_args()
-        user_prompt = json.loads(args['prompt'])
+        user_prompt = args['prompt']
         prompt_id = user_prompt['prompt_id']
         prompt_content = user_prompt['prompt']
         
@@ -175,7 +175,6 @@ class CodeGenerationAPI(Resource):
                    "code": out})
         # update prompt list
         update_prompt(prompt_list, prompt_id, instruction, problem, ans, prompt_content, out)
-            
         return res
     
 class PromptSaveAPI(Resource):

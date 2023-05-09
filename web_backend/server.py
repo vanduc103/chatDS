@@ -128,7 +128,7 @@ class PromptInitAPI(Resource):
             prompt = instruction + problem + prompt_content + ans
             
             #out = response(prompt)
-            out = "print('test code')"
+            out = "print('test code " + str(idx) + "')"
             res.append({"prompt_id": idx, "prompt": prompt_content.replace("Q:",""),
                    "code": out})
             # update prompt list

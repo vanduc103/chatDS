@@ -11,6 +11,7 @@ from werkzeug.utils import secure_filename
 
 import numpy as np
 import pandas as pd
+import json
 
 from database import Database
 from config import upload_folder, allowed_extensions
@@ -29,8 +30,9 @@ openai_key = ''
 
 instruction = '''Instruction: You are a code generation assistant for data science problem. 
 Code is in Python. Please import all required libraries.
-The data science problem is in the "Problem Description" paragraph.
-The dataset information is in the "Dataset Information" paragraph.
+The data science problem is in the "Problem Description" part.
+The dataset information is in the "Dataset Information" part.
+The data values information is in the "Data Values" part.
 Please follow carefully each sentence in the prompt after the "Q:".
 '''
 
@@ -51,8 +53,18 @@ initial_templates = [
     'Check null values.',
 ]
 
-def dataset_metadata(data_file):
-    print('aa')
+def get_dataset_metadata(data_file):
+    df = pd.read_csv(data_file)
+    import io
+    buf = io.StringIO()
+    df.info(buf=buf)
+    metadata = buf.getvalue()
+    return metadata
+
+def get_dataset_values(data_file, col_name):
+    df = pd.read_csv(data_file)
+    values = df[col_name].count_values()
+    return str(values)
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -120,7 +132,7 @@ class PromptInitAPI(Resource):
             res.append({"prompt_id": idx, "prompt": prompt_content.replace("Q:",""),
                    "code": out})
             # update prompt list
-            update_prompt(prompt_list, idx, instruction, problem, ans, prompt, out)
+            update_prompt(prompt_list, idx, instruction, problem, ans, prompt_content, out)
             
         return res
 
@@ -128,25 +140,41 @@ class CodeGenerationAPI(Resource):
     def __init__(self):
         super(CodeGenerationAPI, self).__init__()
         self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument("prompt_id", type=int, location='json', default=0)
-        self.reqparse.add_argument("prompt", type=str, location='json', default='')
+        #self.reqparse.add_argument("prompt_id", type=int, location='json', default=0)
+        self.reqparse.add_argument("prompt", type=json, required=True)
 
     def post(self):
         """Code generation for a user prompt
         """
         args = self.reqparse.parse_args()
-        prompt_id = args['prompt_id']
-        prompt_content = "Q:" + args['prompt']
+        user_prompt = json.loads(args['prompt'])
+        prompt_id = user_prompt['prompt_id']
+        prompt_content = user_prompt['prompt']
+        
+        need_dataset_metadata = True
+        need_data_values = False
+        dataset_metadata = '''Dataset Information:
+        '''
+        data_values = '''Data Values:
+        '''
+        
+        if need_dataset_metadata:
+            dataset_metadata += get_dataset_metadata(data_file)
+        if need_data_values:
+            col_name = ['']
+            data_values += get_dataset_values(data_file, col_name)
+        
         res = []
         code = read_code(prompt_list, prompt_id)
-        prompt = instruction + prompt_content + ans
+        prompt_content = "Q:" + prompt_content
+        prompt = instruction + dataset_metadata + data_values + prompt_content + ans
             
         #out = response(prompt)
         out = "print('test code')"
         res.append({"prompt_id": prompt_id, "prompt": prompt,
                    "code": out})
         # update prompt list
-        update_prompt(prompt_list, cell_idx, instruction, problem, ans, prompt, out)
+        update_prompt(prompt_list, prompt_id, instruction, problem, ans, prompt_content, out)
             
         return res
     
@@ -154,15 +182,20 @@ class PromptSaveAPI(Resource):
     def __init__(self):
         super(PromptSaveAPI, self).__init__()
         self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument("prompt_list", type=json, required=True)
 
     def post(self):
-        """Update user prompt
+        """Save prompt list from web
         """
         args = self.reqparse.parse_args()
-        res = []
+        prompts = jsons.load(args['prompt_list'])
         
+        for user_prompt in prompts:
+            prompt_content = "Q:" + user_prompt['prompt']
+            prompt_id = user_prompt['prompt_id']
+            prompt_list[prompt_id]['prompt'] = prompt_content
             
-        return res
+        return {"result": "ok"}
 
     
 api.add_resource(ProgramInitAPI, '/api/v1/init', endpoint='init')

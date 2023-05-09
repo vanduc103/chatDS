@@ -41,8 +41,7 @@ ans = '''A:
 
 data_file = ''
 
-initial_templates = 
-[
+initial_templates = [
     'Imports various libraries and modules to perform data preprocessing, data analysis and data visualization.',
     'Reading the dataset in {} file into a DataFrame and Show first 5 rows.',
     'Show dataset information.',

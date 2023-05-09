@@ -54,7 +54,7 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in allowed_extensions
 
 @app.route('/api/v1/upload_file', methods=['POST'])
-@cross_origin()
+#@cross_origin()
 #@auth.login_required
 def upload_file():
     # check if the post request has the file part

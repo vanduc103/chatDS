@@ -17,6 +17,8 @@ from database import Database
 from config import upload_folder, allowed_extensions
 from utils import read_code, response, update_prompt
 
+from argparse import ArgumentParser
+
 
 app = Flask(__name__, static_url_path="")
 app.config['SECRET_KEY'] = 'Snu2022!'
@@ -226,4 +228,7 @@ api.add_resource(CodeGenerationAPI, '/api/v1/code_generate', endpoint='code_gene
 api.add_resource(PromptSaveAPI, '/api/v1/prompt_save', endpoint='prompt_save')
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=38500)
+    parser = ArgumentParser()
+    parser.add_argument("--port", type=int, default=38500)
+    args = parser.parse_args()
+    app.run(debug=True, host='0.0.0.0', port=args.port)

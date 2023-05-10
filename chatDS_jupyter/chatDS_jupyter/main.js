@@ -1,3 +1,9 @@
+BLOCK_PROMPT = false
+BLOCK_REFRESH = false
+REMOVE_ALL = false
+prompt_increment = 0
+current_selected = ""
+
 define([
     'base/js/namespace',
     'jquery',
@@ -18,7 +24,7 @@ define([
             if (new_mx && mx < new_mx) mx = new_mx
         } 
     }
-    localStorage.setItem("prompt_increment", mx);
+    prompt_increment = mx
     var get_last_cell_index = function () {
         var last_cell_index = Jupyter.notebook.get_cells().length - 1;
         if (last_cell_index <= 0)
@@ -27,7 +33,7 @@ define([
     }
     var removeAll = function () {
         var cells = Jupyter.notebook.get_cells();
-        localStorage.setItem("REMOVE_ALL", "True");
+        REMOVE_ALL = true
         for (var i = 0; i < cells.length; i++) {
             Jupyter.notebook.delete_cell(cells[i].index);
         }
@@ -38,17 +44,18 @@ define([
         if (!content) return
         for (var i = 0; i < content.length; i++) {
             var cell = content[i];
-            var prompt_id = cell['prompt_id'] + 1
-            //var prompt = "## Prompt " + prompt_id + ": " + cell['prompt']
-            var prompt = "## " + cell['prompt']
+            prompt_increment = cell['prompt_id']
+            var prompt_id = prompt_increment + 1
+            var prompt = "## Prompt " + prompt_id + ": " + cell['prompt']
             var prompt_code = cell['code']
-            insert_prompt_cell(prompt, last_cell_index);
+            insert_prompt_cell(prompt, last_cell_index, prompt_increment);
             last_cell_index += 1;
             insert_code_cell(prompt_code, last_cell_index);
             last_cell_index += 1;
         }
-        localStorage.removeItem("REMOVE_ALL");
+        REMOVE_ALL = false
         Jupyter.notebook.get_cells()[0].select();
+        prompt_increment += 1;
     }
     var load_init_prompt = function () {
         $.ajax({
@@ -57,22 +64,13 @@ define([
         }).done(initWorkingSpace);
     }
 
-    var insert_prompt_cell = function (msg, new_cell_index) {
+    var insert_prompt_cell = function (msg, new_cell_index, prompt_id) {
         var all_cells = Jupyter.notebook.get_cells();
         for (var i = 0; i < all_cells.length; i++) { 
             all_cells[i].unselect();
         }
         if (!msg) {
-            id = localStorage.getItem("prompt_increment");
-            if (id === null) {
-                id = 1;
-            } else {
-                id = parseInt(id);
-                id += 1;
-            }
-            localStorage.setItem("prompt_increment", id);
-            //msg = "## Prompt " + id;
-            msg = "## Prompt: "
+            msg = "## Prompt " + (prompt_id + 1);
         }
         var notebook = Jupyter.notebook;
         var new_cell = notebook.insert_cell_below('markdown', new_cell_index);
@@ -82,6 +80,7 @@ define([
         new_cell.element[0].scrollIntoViewIfNeeded();
         new_cell.unselect();
         localStorage.setItem('NEW_PROMPT_CELL', new_cell.cell_id);
+        new_cell['prompt_id'] = prompt_id
     };
     
     var insert_code_cell = function (content, index) {
@@ -100,12 +99,13 @@ define([
                 'help': 'Add new prompt cell',
                 'icon': 'fa-terminal',
                 'handler': function () {
-                    if (localStorage.getItem("BLOCK_PROMPT") != 'True') {
-                        localStorage.setItem("BLOCK_PROMPT", "True");
+                    if (!BLOCK_PROMPT) {
+                        BLOCK_PROMPT = true;
                         var last_cell_index = get_last_cell_index();
-                        insert_prompt_cell("", last_cell_index)
+                        insert_prompt_cell("", last_cell_index, prompt_increment)
+                        prompt_increment += 1
                         setTimeout(function() {
-                            localStorage.removeItem("BLOCK_PROMPT")
+                            BLOCK_PROMPT = false
                         }, 500)
                     } else {
                         alert ("You click too fast!")
@@ -121,11 +121,12 @@ define([
                 'help': 'Reload Notebook',
                 'icon': 'fa-refresh',
                 'handler': function () {
-                    if (localStorage.getItem("BLOCK_REFRESH") != 'True') {
-                        localStorage.setItem("BLOCK_REFRESH", "True");
+                    console.log(BLOCK_REFRESH)
+                    if (!BLOCK_REFRESH) {
+                        BLOCK_REFRESH = true
                         load_init_prompt();
                         setTimeout(function() {
-                            localStorage.removeItem("BLOCK_REFRESH")
+                            BLOCK_REFRESH = false;
                         }, 500)
                     } else {
                         alert ("You click too fast!")
@@ -145,7 +146,7 @@ define([
     var selectCell = function(cell) {
         var content = cell.get_text();
         var cell_id = cell.cell_id;
-        localStorage.setItem("current_selected", cell_id)
+        current_selected = cell_id
         localStorage.setItem('current_text' + cell_id, content);
     }
     events.on('select.Cell', function(event, data) {
@@ -159,7 +160,7 @@ define([
     });
 
     $('[data-jupyter-action="jupyter-notebook:cut-cell"]').on('click', function() {
-        if (!localStorage.getItem('current_selected')) {
+        if (!current_selected) {
             var focus_cell = Jupyter.notebook.get_cell(0);
             selectCell(focus_cell);
         }
@@ -186,7 +187,7 @@ define([
     }
 
     events.on('delete.Cell', function(event, data) {
-        if(localStorage.getItem("REMOVE_ALL")) return;
+        if(REMOVE_ALL) return;
         var cell_id = data.cell.cell_id;
         var cell_index = data.index;
         var length = Jupyter.notebook.get_cells().length;
@@ -195,7 +196,7 @@ define([
         else cell_index = length;
         var prev_text = localStorage.getItem('current_text' + cell_id);
         localStorage.removeItem('current_text' + cell_id)
-        localStorage.removeItem("current_selected")
+        current_selected = ""
         if (verifyPromptCell(data)) {
             dialog.modal({
                 title: 'Confirm Action',
@@ -260,7 +261,6 @@ define([
     function load_ipython_extension() {
         addPromptButton();
         addResetButton();
-        localStorage.removeItem("REMOVE_ALL");
     }
     return {
         load_ipython_extension: load_ipython_extension

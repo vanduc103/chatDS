@@ -12,13 +12,13 @@ define([
 ], function (Jupyter, $, events, dialog) {
     var base_url = "http://147.47.236.89:39500/api/v1"
     console.log("loading ChatDS")
-    var all_cells = Jupyter.notebook.get_cells();
-    var mx = 0;
+    var all_cells = Jupyter.notebook.get_cells()
+    var mx = 0
     for (var i = 0; i < all_cells.length; i++) {
-        if (all_cells[i].cell_type != 'markdown') continue;
-        var content = all_cells[i].get_text();
-        content = content.trim();
-        content = content.split(" ");
+        if (all_cells[i].cell_type != 'markdown') continue
+        var content = all_cells[i].get_text()
+        content = content.trim()
+        content = content.split(" ")
         if (content.length > 1) {
             var new_mx = parseInt(content[2])
             if (new_mx && mx < new_mx) mx = new_mx
@@ -26,72 +26,72 @@ define([
     }
     prompt_increment = mx
     var get_last_cell_index = function () {
-        var last_cell_index = Jupyter.notebook.get_cells().length - 1;
+        var last_cell_index = Jupyter.notebook.get_cells().length - 1
         if (last_cell_index <= 0)
-            last_cell_index = 1;
-        return last_cell_index;
+            last_cell_index = 1
+        return last_cell_index
     }
     var removeAll = function () {
-        var cells = Jupyter.notebook.get_cells();
+        var cells = Jupyter.notebook.get_cells()
         REMOVE_ALL = true
         for (var i = 0; i < cells.length; i++) {
-            Jupyter.notebook.delete_cell(cells[i].index);
+            Jupyter.notebook.delete_cell(cells[i].index)
         }
     }
     var initWorkingSpace = function (content) {
-        removeAll();
-        var last_cell_index = get_last_cell_index();
+        removeAll()
+        var last_cell_index = get_last_cell_index()
         if (!content) return
         for (var i = 0; i < content.length; i++) {
-            var cell = content[i];
+            var cell = content[i]
             prompt_increment = cell['prompt_id']
             var prompt_id = prompt_increment + 1
             var prompt = "## Prompt " + prompt_id + ": " + cell['prompt']
             var prompt_code = cell['code']
-            insert_prompt_cell(prompt, last_cell_index, prompt_increment);
-            last_cell_index += 1;
-            insert_code_cell(prompt_code, last_cell_index);
-            last_cell_index += 1;
+            insert_prompt_cell(prompt, last_cell_index, prompt_increment)
+            last_cell_index += 1
+            insert_code_cell(prompt_code, last_cell_index)
+            last_cell_index += 1
         }
         REMOVE_ALL = false
-        Jupyter.notebook.get_cells()[0].select();
-        prompt_increment += 1;
+        Jupyter.notebook.get_cells()[0].select()
+        prompt_increment += 1
     }
     var load_init_prompt = function () {
         $.ajax({
             url: base_url + '/prompt_init',
             method: 'POST',
-        }).done(initWorkingSpace);
+        }).done(initWorkingSpace)
     }
 
     var insert_prompt_cell = function (msg, new_cell_index, prompt_id) {
-        var all_cells = Jupyter.notebook.get_cells();
+        var all_cells = Jupyter.notebook.get_cells()
         for (var i = 0; i < all_cells.length; i++) { 
-            all_cells[i].unselect();
+            all_cells[i].unselect()
         }
         if (!msg) {
-            msg = "## Prompt " + (prompt_id + 1);
+            msg = "## Prompt " + (prompt_id + 1)
         }
-        var notebook = Jupyter.notebook;
-        var new_cell = notebook.insert_cell_below('markdown', new_cell_index);
-        new_cell.set_text(msg);
-        new_cell.execute();
-        new_cell.select();
-        new_cell.element[0].scrollIntoViewIfNeeded();
-        new_cell.unselect();
-        localStorage.setItem('NEW_PROMPT_CELL', new_cell.cell_id);
+        var notebook = Jupyter.notebook
+        var new_cell = notebook.insert_cell_below('markdown', new_cell_index)
+        new_cell.set_text(msg)
+        new_cell.execute()
+        new_cell.select()
+        new_cell.element[0].scrollIntoViewIfNeeded()
+        new_cell.unselect()
+        localStorage.setItem('NEW_PROMPT_CELL', new_cell.cell_id)
         prompts[new_cell.cell_id] = prompt_id
-    };
+    }
     
     var insert_code_cell = function (content, index) {
-        var new_cell = Jupyter.notebook.insert_cell_above('code', index);
-        new_cell.set_text(content);
-        new_cell.execute();
-        new_cell.select();
-        new_cell.element[0].scrollIntoViewIfNeeded();
-        new_cell.unselect();
-        // Jupyter.notebook.execute_cell_and_select_below();
-    };
+        var new_cell = Jupyter.notebook.insert_cell_above('code', index)
+        new_cell.set_text(content)
+        new_cell.execute()
+        new_cell.select()
+        new_cell.element[0].scrollIntoViewIfNeeded()
+        new_cell.unselect()
+        // Jupyter.notebook.execute_cell_and_select_below()
+    }
     // Add Toolbar button
     var addPromptButton = function () {
         Jupyter.toolbar.add_buttons_group([
@@ -100,8 +100,8 @@ define([
                 'icon': 'fa-terminal',
                 'handler': function () {
                     if (!BLOCK_PROMPT) {
-                        BLOCK_PROMPT = true;
-                        var last_cell_index = get_last_cell_index();
+                        BLOCK_PROMPT = true
+                        var last_cell_index = get_last_cell_index()
                         insert_prompt_cell("", last_cell_index, prompt_increment)
                         prompt_increment += 1
                         setTimeout(function() {
@@ -124,9 +124,9 @@ define([
                     console.log(BLOCK_REFRESH)
                     if (!BLOCK_REFRESH) {
                         BLOCK_REFRESH = true
-                        load_init_prompt();
+                        load_init_prompt()
                         setTimeout(function() {
-                            BLOCK_REFRESH = false;
+                            BLOCK_REFRESH = false
                         }, 500)
                     } else {
                         alert ("You click too fast!")
@@ -137,36 +137,37 @@ define([
     }
     
     var verifyPromptCell = function(data) {
-        var cell_type = data['cell']['cell_type'];
+        var cell_type = data['cell']['cell_type']
         var content = data.cell.get_text()
-        var cell_code = content.substr(0, 9).toLowerCase();
+        var cell_code = content.substr(0, 9).toLowerCase()
         return cell_type == 'markdown' && cell_code == '## prompt'
     }
     // check if a cell is modified
     var selectCell = function(cell) {
-        var content = cell.get_text();
-        var cell_id = cell.cell_id;
+        var content = cell.get_text()
+        var cell_id = cell.cell_id
         current_selected = cell_id
-        localStorage.setItem('current_text' + cell_id, content);
+        localStorage.setItem('current_text' + cell_id, content)
     }
     events.on('select.Cell', function(event, data) {
-        selectCell(data.cell);
-    });
+        selectCell(data.cell)
+    })
 
     events.on('edit_mode.Cell', function(event, data) {
         if(verifyPromptCell(data)) {
             localStorage.setItem("EVEN_MP", "True")
         }            
-    });
+    })
 
     $('[data-jupyter-action="jupyter-notebook:cut-cell"]').on('click', function() {
         if (!current_selected) {
-            var focus_cell = Jupyter.notebook.get_cell(0);
-            selectCell(focus_cell);
+            var focus_cell = Jupyter.notebook.get_cell(0)
+            selectCell(focus_cell)
         }
     })
 
     var submitPrompt = function(prompt_id, prompt) {
+        prompt = prompt.replace("## Prompt","")
         var content = 
         {
             'prompt': {
@@ -182,19 +183,22 @@ define([
             dataType: 'json',
             data: content
         }).done(function(res) {
-            
+            if (!res) return
+            var data = res[0]
+            var last_cell_index = get_last_cell_index()
+            insert_code_cell(data['code'], last_cell_index)
         })
     }
 
     events.on('delete.Cell', function(event, data) {
-        if(REMOVE_ALL) return;
-        var cell_id = data.cell.cell_id;
-        var cell_index = data.index;
-        var length = Jupyter.notebook.get_cells().length;
+        if(REMOVE_ALL) return
+        var cell_id = data.cell.cell_id
+        var cell_index = data.index
+        var length = Jupyter.notebook.get_cells().length
         if (cell_index < length)
              cell_index -= 1
-        else cell_index = length;
-        var prev_text = localStorage.getItem('current_text' + cell_id);
+        else cell_index = length
+        var prev_text = localStorage.getItem('current_text' + cell_id)
         localStorage.removeItem('current_text' + cell_id)
         current_selected = ""
         if (verifyPromptCell(data)) {
@@ -205,28 +209,33 @@ define([
                     'Cancel' : {
                         'class': 'btn-danger',
                         'click': function() {
-                            insert_prompt_cell(prev_text, cell_index);
+                            insert_prompt_cell(prev_text, cell_index)
                         }
                     },
                     'OK': {
                         'class': 'btn-primary',
                         'click': function() {
-                            var code_cell = Jupyter.notebook.get_cell(cell_index+1);
+                            var code_cell = Jupyter.notebook.get_cell(cell_index+1)
                             if (code_cell.cell_type == 'code') 
-                                Jupyter.notebook.delete_cell(cell_index+1);
+                                Jupyter.notebook.delete_cell(cell_index+1)
                         }
                     }
                 }
         
-            });
+            })
         }
     })
 
     events.on('rendered.MarkdownCell', function(event, data) {
-        var cell_id = data.cell.cell_id;
-        var content = data.cell.get_text();
-        if (prompts.hasOwnProperty(cell_id))  
-            submitPrompt(prompts[cell_id], content);
+        var cell_id = data.cell.cell_id
+        var content = data.cell.get_text().trim()
+        if (!prompts.hasOwnProperty(cell_id)) return
+        var prev_text = localStorage.getItem('current_text' + cell_id)
+        if (prev_text) {
+            prev_text = prev_text.trim()
+            if (prev_text == content) return
+            submitPrompt(prompts[cell_id], content)
+        }
         /*
         setTimeout(function() {
             var even2 = localStorage.getItem("NEW_PROMPT_CELL")
@@ -239,11 +248,11 @@ define([
                         'OK': {
                             'class': 'btn-primary',
                             'click': function() {
-                                submitPrompt(0, content);
+                                submitPrompt(0, content)
                             }
                         }
                     }
-                });
+                })
             }
             setTimeout(function() {
                 localStorage.removeItem('NEW_PROMPT_CELL')
@@ -254,16 +263,16 @@ define([
     })
 
     events.on('execute.CodeCell', function(event, data) {
-        var cell_id = data.cell.cell_id;
+        var cell_id = data.cell.cell_id
     })
 
 
     // Run on start
     function load_ipython_extension() {
-        addPromptButton();
-        addResetButton();
+        addPromptButton()
+        addResetButton()
     }
     return {
         load_ipython_extension: load_ipython_extension
-    };
-});
+    }
+})

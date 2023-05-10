@@ -3,14 +3,14 @@ BLOCK_REFRESH = false
 REMOVE_ALL = false
 prompt_increment = 0
 current_selected = ""
-
+prompts = {}
 define([
     'base/js/namespace',
     'jquery',
     'base/js/events',
     'base/js/dialog'
 ], function (Jupyter, $, events, dialog) {
-    var base_url = "http://147.47.236.89:38500/api/v1"
+    var base_url = "http://147.47.236.89:39500/api/v1"
     console.log("loading ChatDS")
     var all_cells = Jupyter.notebook.get_cells();
     var mx = 0;
@@ -80,7 +80,7 @@ define([
         new_cell.element[0].scrollIntoViewIfNeeded();
         new_cell.unselect();
         localStorage.setItem('NEW_PROMPT_CELL', new_cell.cell_id);
-        new_cell['prompt_id'] = prompt_id
+        prompts[new_cell.cell_id] = prompt_id
     };
     
     var insert_code_cell = function (content, index) {
@@ -182,7 +182,7 @@ define([
             dataType: 'json',
             data: content
         }).done(function(res) {
-            console.log(res)
+            
         })
     }
 
@@ -225,7 +225,8 @@ define([
     events.on('rendered.MarkdownCell', function(event, data) {
         var cell_id = data.cell.cell_id;
         var content = data.cell.get_text();
-        submitPrompt(0, content);
+        if (prompts.hasOwnProperty(cell_id))  
+            submitPrompt(prompts[cell_id], content);
         /*
         setTimeout(function() {
             var even2 = localStorage.getItem("NEW_PROMPT_CELL")

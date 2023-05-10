@@ -39,7 +39,8 @@ define([
         for (var i = 0; i < content.length; i++) {
             var cell = content[i];
             var prompt_id = cell['prompt_id'] + 1
-            var prompt = "## Prompt " + prompt_id + ": " + cell['prompt']
+            //var prompt = "## Prompt " + prompt_id + ": " + cell['prompt']
+            var prompt = "## " + cell['prompt']
             var prompt_code = cell['code']
             insert_prompt_cell(prompt, last_cell_index);
             last_cell_index += 1;
@@ -70,7 +71,8 @@ define([
                 id += 1;
             }
             localStorage.setItem("prompt_increment", id);
-            msg = "## Prompt " + id;
+            //msg = "## Prompt " + id;
+            msg = "## Prompt: "
         }
         var notebook = Jupyter.notebook;
         var new_cell = notebook.insert_cell_below('markdown', new_cell_index);
@@ -222,6 +224,8 @@ define([
     events.on('rendered.MarkdownCell', function(event, data) {
         var cell_id = data.cell.cell_id;
         var content = data.cell.get_text();
+        submitPrompt(0, content);
+        /*
         setTimeout(function() {
             var even2 = localStorage.getItem("NEW_PROMPT_CELL")
             if (even2 != cell_id) {
@@ -243,6 +247,7 @@ define([
                 localStorage.removeItem('NEW_PROMPT_CELL')
             }, 100)
         }, 100)
+        */
         
     })
 

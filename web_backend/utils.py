@@ -1,7 +1,16 @@
 import json
+
+def prompt_list_len(prompt_list):
+    promptlist_len = 0
+    for i in range(len(prompt_list)):
+        if prompt_list[i] is not None:
+            promptlist_len += 1
+    return promptlist_len
+
 def read_code(prompt_list, cell_idx):
         code = ""
-        for i in range(cell_idx+1):
+        promptlist_len = prompt_list_len(prompt_list)
+        for i in range(min(promptlist_len, cell_idx+1)):
             code += prompt_list[i]['generated_code']
         return code
 

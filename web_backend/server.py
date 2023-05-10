@@ -37,14 +37,22 @@ Please follow carefully each sentence in the prompt after the "Q:".
 '''
 
 problem = '''Problem Description:
+### Context\n\nTo Explore more on Regression Algorithm\n\n\n### Content\n\n Each record in the database describes a Boston suburb or town. The data was drawn from the Boston Standard Metropolitan Statistical Area (SMSA) in 1970. The attributes are de\ufb01ned as follows (taken from the UCI Machine Learning Repository1): CRIM: per capita crime rate by town\n2. ZN: proportion of residential land zoned for lots over 25,000 sq.ft.\n3. INDUS: proportion of non-retail business acres per town\n4. CHAS: Charles River dummy variable (= 1 if tract bounds river; 0 otherwise)\n5. NOX: nitric oxides concentration (parts per 10 million)\n1https://archive.ics.uci.edu/ml/datasets/Housing\n123\n20.2. Load the Dataset 124\n6. RM: average number of rooms per dwelling\n7. AGE: proportion of owner-occupied units built prior to 1940\n8. DIS: weighted distances to \ufb01ve Boston employment centers\n9. RAD: index of accessibility to radial highways\n10. TAX: full-value property-tax rate per $10,000\n11. PTRATIO: pupil-teacher ratio by town 12. B: 1000(Bk\u22120.63)2 where Bk is the proportion of blacks by town 13. LSTAT: % lower status of the population\n14. MEDV: Median value of owner-occupied homes in $1000s\nWe can see that the input attributes have a mixture of units.\n\n\n### Acknowledgements\n\nThanks to Dr.Jason
+'''
+
+dataset_metadata = '''Dataset Information:
+'''
+data_values = '''Data Values:
 '''
 
 prompt_content = ''
 
-ans = '''A:
-<code>'''
+ans = '''
+A:
+<code>
+'''
 
-data_file = ''
+data_file = '/home/duclv/project/openai/web_backend/uploads/BostonHousing.csv'
 data = None
 
 initial_templates = [
@@ -132,6 +140,7 @@ class PromptInitAPI(Resource):
             code = read_code(prompt_list, idx-1)
             prompt_content = 'Q:' + template.format(data_file)
             prompt = instruction + problem + prompt_content + ans
+            print(prompt)
             
             #out = response(prompt)
             out = "print('test code " + str(idx) + "')"
@@ -154,15 +163,21 @@ class CodeGenerationAPI(Resource):
         """
         args = self.reqparse.parse_args()
         user_prompt = args['prompt']
+        print(user_prompt)
         prompt_id = user_prompt['prompt_id']
         prompt_content = user_prompt['prompt']
+        prompt_content = prompt_content.replace("##","").replace("Prompt: ", "").strip()
+        
+        promptlist_len = 0
+        for i in range(len(prompt_list)):
+            if prompt_list[i] is not None:
+                promptlist_len += 1
+        print('promptlist:', promptlist_len)
         
         need_dataset_metadata = False
         need_data_values = False
-        dataset_metadata = '''Dataset Information:
-        '''
-        data_values = '''Data Values:
-        '''
+        global dataset_metadata
+        global data_values
         
         if need_dataset_metadata:
             dataset_metadata += get_dataset_metadata(data_file)
@@ -174,6 +189,7 @@ class CodeGenerationAPI(Resource):
         code = read_code(prompt_list, prompt_id)
         prompt_content = "Q:" + prompt_content
         prompt = instruction + dataset_metadata + data_values + prompt_content + ans
+        print(prompt)
             
         #out = response(prompt)
         out = "print('test code')"

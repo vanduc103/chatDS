@@ -45,6 +45,7 @@ ans = '''A:
 <code>'''
 
 data_file = ''
+data = None
 
 initial_templates = [
     'Imports various libraries and modules to perform data preprocessing, data analysis and data visualization.',
@@ -52,6 +53,11 @@ initial_templates = [
     'Show dataset information.',
     'Check null values.',
 ]
+
+
+def running_code(prompt_list, prompt_id):
+    return None
+    
 
 def get_dataset_metadata(data_file):
     df = pd.read_csv(data_file)

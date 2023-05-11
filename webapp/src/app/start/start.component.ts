@@ -10,37 +10,45 @@ import { Global } from '../global'
 })
 export class StartComponent implements OnInit {
 
-  email: string = ""
-  prompt: string = ""
-  data: any = ""
+  data: any = {
+    "email": "",
+    "problem_description": "",
+    "openai_key": "",
+    "file_path": ""
+  }
 
   constructor(public _globalConfig: Global, private _service: Services, private _router: Router, private _route: ActivatedRoute) { }
 
   ngOnInit(): void {
   }
 
-  onDataSelected(e: any): void {
+  onDataSelected(event: any): void {
     let self = this
-    let reader = new FileReader()
-    reader.readAsText(e.target.files[0])
-    reader.onload = () => {
-      self.data = reader.result
-    }
+    let form_data = new FormData()
+    let e = event.target.files[0]
+    form_data.append('file', e)
+    this._service.uploadData(form_data).subscribe((res: any) => {
+      if (!("file_path" in res)) alert("Cannot upload file")
+      self.data['file_path'] = res["file_path"]
+    })
+  }
+  
+  validateData() : boolean {
+    if (!this.data.email) return false
+    if (!this.data.problem_description) return false
+    if (!this.data.file_path) return false
+    return true
   }
 
-  processData(d: any): string {
-    let data = ""
-    return data
-  }
   start(): void {
-    if (!this.data) return
-    let data = this.processData(this.data)
-    let obj = {
-      email: this.email,
-      prompt: this.prompt,
-      data: data
-    }
-    this._service.initData(obj)
+    if (!this.validateData()) return
+    console.log(123421)
+    let data = this.data
+    this._service.initData(data).subscribe((res: any) => {
+      if (res["result"] == "ok") {
+        this._router.navigate(['/chat'])
+      }
+    })
   }
 
 }

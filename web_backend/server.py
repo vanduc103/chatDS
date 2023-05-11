@@ -83,8 +83,7 @@ def get_dataset_values(data_file, col_name):
     return str(values)
 
 def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in allowed_extensions
+    return not allowed_extensions or ('.' in filename and filename.rsplit('.', 1)[1].lower() in allowed_extensions)
 
 @app.route('/api/v1/upload_file', methods=['POST'])
 #@cross_origin()
@@ -121,7 +120,7 @@ class ProgramInitAPI(Resource):
         args = self.reqparse.parse_args()
         email = args['email']
         openai_key = args['openai_key']
-        problem += args['problem_description']
+        problem = args['problem_description']
         data_file = args['file_path']
             
         return {"result": "ok"}
@@ -220,12 +219,21 @@ class PromptSaveAPI(Resource):
             
         return {"result": "ok"}
 
+class TestAPI(Resource):
+    def __init__(self):
+        super(TestAPI, self).__init__()
+
+    def get(self):
+        """Save prompt list from web
+        """
+        return {"url": "http://147.47.236.89:8888/tree"}
     
 api.add_resource(ProgramInitAPI, '/api/v1/init', endpoint='init')
 api.add_resource(PromptInitAPI, '/api/v1/prompt_init', endpoint='prompt_init')
 
 api.add_resource(CodeGenerationAPI, '/api/v1/code_generate', endpoint='code_generate')
 api.add_resource(PromptSaveAPI, '/api/v1/prompt_save', endpoint='prompt_save')
+api.add_resource(TestAPI, '/api/v1/test', endpoint='test')
 
 if __name__ == '__main__':
     parser = ArgumentParser()

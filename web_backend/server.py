@@ -15,7 +15,7 @@ import json
 
 from database import Database
 from config import upload_folder, allowed_extensions, open_api_mode, jupyter_url, openai_key
-from utils import read_code, response, update_prompt, update_prompt_code
+from utils import read_code, response, update_prompt, update_prompt_code, write_code
 
 from argparse import ArgumentParser
 
@@ -28,7 +28,6 @@ api = Api(app)
 
     
 prompt_list = [None] * 100
-openai_key = ''
 
 instruction = '''Instruction: You are the code generation assistant for a data science problem. 
 Code is in Python. Please import all required libraries.
@@ -54,6 +53,7 @@ A:
 '''
 
 data_file = ''
+nb_file = ''
 
 initial_templates = [
     'Imports various libraries and modules to perform data preprocessing, data analysis and data visualization.@problem',
@@ -134,14 +134,19 @@ class ProgramInitAPI(Resource):
         """
         args = self.reqparse.parse_args()
         global email
-        global openai_key
         global problem
         global data_file
+        global nb_file
+        
         email = args['email']
         #openai_key = args['openai_key']
         problem += args['problem_description'] + "\n"
         data_file = args['file_path']
         print(data_file)
+        # get file name
+        file_name = os.path.splitext(os.path.basename(data_file))[0]
+        nb_file = os.path.join(os.path.dirname(data_file), file_name + '.ipynb')
+        print(nb_file)
         
         # create a new folder for a user
         user_folder = email.split('@')[0]
@@ -160,6 +165,7 @@ class PromptInitAPI(Resource):
         args = self.reqparse.parse_args()
         res = []
         global prompt_list
+        global nb_file
         for idx in range(len(initial_templates)):
             template = initial_templates[idx]
             code = read_code(prompt_list, idx-1)
@@ -172,11 +178,13 @@ class PromptInitAPI(Resource):
                 out = response(openai_key, prompt)
             else:
                 out = "print('test code " + str(idx) + "')"
-            print(out)
+            print('>>', out)
             res.append({"prompt_id": idx, "prompt": prompt_content.replace("Q:",""),
                    "code": out})
             # update prompt list
             update_prompt(prompt_list, idx, instruction, problem, ans, prompt_content, out)
+            # write code
+            write_code(nb_file, prompt_list, idx)
             
         return res
 
@@ -201,6 +209,7 @@ class CodeGenerationAPI(Resource):
         
         promptlist_len = 0
         global prompt_list
+        global nb_file
         for i in range(len(prompt_list)):
             if prompt_list[i] is not None:
                 promptlist_len += 1
@@ -221,11 +230,14 @@ class CodeGenerationAPI(Resource):
         res.append({"code": out})
         # update prompt list
         update_prompt(prompt_list, prompt_id, instruction, problem, ans, prompt_content, out)
+        # write code
+        write_code(nb_file, prompt_list, prompt_id)
+        
         return res
     
 class PromptUpdateAPI(Resource):
     def __init__(self):
-        super(PromptSaveAPI, self).__init__()
+        super(PromptUpdateAPI, self).__init__()
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument("prompt", type=dict, required=True)
 
@@ -237,10 +249,15 @@ class PromptUpdateAPI(Resource):
         print(data)
         prompt_id = int(data['prompt_id'])
         prompt_code = data['code']
-        email = data['email']
+        email = data.get('email', '')
         print(prompt_code)
+        
+        global prompt_list
+        global nb_file
         # update prompt list
         update_prompt_code(prompt_list, prompt_id, prompt_code)
+        # write code
+        write_code(nb_file, prompt_list, prompt_id)
             
         return {"result": "ok"}
 

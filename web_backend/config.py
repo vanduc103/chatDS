@@ -16,4 +16,4 @@ openai_key = "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"
 
 # allowed_extensions = {'csv'}
 allowed_extensions = {}
-open_api_mode = False
+open_api_mode = True

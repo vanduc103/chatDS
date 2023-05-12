@@ -9,6 +9,7 @@ current_selected = ""
 prompts = {}
 prompt_to_code = {}
 code_to_prompt = {}
+current_text = {}
 define([
     'base/js/namespace',
     'jquery',
@@ -50,11 +51,11 @@ define([
         }
     }
     var initWorkingSpace = function (content) {
-        for (var key in localStorage) {
-            if (key.startsWith("current_text")) {
-                localStorage.removeItem(key)
-            }
-        }
+        // for (var key in localStorage) {
+        //     if (key.startsWith("current_text")) {
+        //         localStorage.removeItem(key)
+        //     }
+        // }
         removeAll()
         var last_cell_index = get_last_cell_index()
         if (!content) return
@@ -207,17 +208,19 @@ define([
         var content = cell.get_text()
         var cell_id = cell.cell_id
         current_selected = cell_id
-        localStorage.setItem('current_text' + cell_id, content)
+        if (content) content.trim()
+        current_text[cell_id] = content
+        // localStorage.setItem('current_text' + cell_id, content)
     }
     events.on('select.Cell', function(event, data) {
         selectCell(data.cell)
     })
 
-    events.on('edit_mode.Cell', function(event, data) {
-        if(verifyPromptCell(data)) {
-            localStorage.setItem("EVEN_MP", "True")
-        }            
-    })
+    // events.on('edit_mode.Cell', function(event, data) {
+    //     if(verifyPromptCell(data)) {
+    //         localStorage.setItem("EVEN_MP", "True")
+    //     }            
+    // })
 
     $('[data-jupyter-action="jupyter-notebook:cut-cell"]').on('click', function() {
         if (!current_selected) {
@@ -271,8 +274,10 @@ define([
         if (cell_index < length)
              cell_index -= 1
         else cell_index = length
-        var prev_text = localStorage.getItem('current_text' + cell_id)
-        localStorage.removeItem('current_text' + cell_id)
+        
+        var prev_text = current_text[cell_id]
+        current_text[cell_id] = ""
+        // localStorage.removeItem('current_text' + cell_id)
         current_selected = ""
         if (verifyPromptCell(data)) {
             dialog.modal({
@@ -301,9 +306,10 @@ define([
         var cell_id = data.cell.cell_id
         var content = data.cell.get_text().trim()
         if (!prompts.hasOwnProperty(cell_id)) return
-        var prev_text = localStorage.getItem('current_text' + cell_id)
+        var prev_text = current_text[cell_id]
+        // localStorage.getItem('current_text' + cell_id)
         if (prev_text) {
-            prev_text = prev_text.trim()
+            prev_text = prev_text
             if (prev_text == content) return
             var cells = Jupyter.notebook.get_cells()
             var cell_index = 0
@@ -345,6 +351,7 @@ define([
         var prompt_id = code_to_prompt[cell_id]
         if (prompt_id) {
             var content = data.cell.get_text().trim()
+            if (content == current_text[cell_id]) return
             submitCode(prompt_id, content)
         }
     })

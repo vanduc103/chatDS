@@ -7,3 +7,4 @@ dbname = "promptdb"
 upload_folder = "./uploads"
 # allowed_extensions = {'csv'}
 allowed_extensions = {}
+open_api_mode = False

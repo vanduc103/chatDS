@@ -212,7 +212,6 @@ class CodeGenerationAPI(Resource):
         prompt_content, prompt_support = prompt_preprocessing(prompt_content)
         prompt = instruction + prompt_support + prompt_content + ans + code
         print(prompt)
-        
         if open_api_mode:
             out = response(openai_key, prompt)
         else:
@@ -225,20 +224,20 @@ class CodeGenerationAPI(Resource):
     
 class PromptUpdateAPI(Resource):
     def __init__(self):
-        super(PromptSaveAPI, self).__init__()
+        super(PromptUpdateAPI, self).__init__()
         self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument("prompt", type=dict, required=True)
+        self.reqparse.add_argument("prompt_id", type=str, location='json', required=True, default='')
+        self.reqparse.add_argument("code", type=str, location='json', required=True, default='')
+        self.reqparse.add_argument("email", type=str, location='json', required=False, default='')
+
 
     def post(self):
         """Update new code for prompt list
         """
         args = self.reqparse.parse_args()
-        data = args['prompt']
-        print(data)
-        prompt_id = int(data['prompt_id'])
-        prompt_code = data['code']
-        email = data['email']
-        print(prompt_code)
+        prompt_id = args['prompt_id']
+        prompt_code = args['code']
+        email = args['email']
         # update prompt list
         update_prompt_code(prompt_list, prompt_id, prompt_code)
             

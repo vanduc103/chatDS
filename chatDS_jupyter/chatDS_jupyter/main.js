@@ -74,10 +74,16 @@ define([
         prompt_increment += 1
     }
     var load_init_prompt = function () {
+        showLoading()
         $.ajax({
             url: base_url + '/prompt_init',
             method: 'POST',
-        }).done(initWorkingSpace)
+        }).done(function(res) {
+            hideLoading()
+            initWorkingSpace(res)
+        }).fail(function() {
+            hideLoading()
+        })
     }
 
     var insert_prompt_cell = function (msg, new_cell_index, prompt_id) {
@@ -140,7 +146,6 @@ define([
                 'help': 'Reload Notebook',
                 'icon': 'fa-refresh',
                 'handler': function () {
-                    console.log(BLOCK_REFRESH)
                     if (!BLOCK_REFRESH) {
                         BLOCK_REFRESH = true
                         load_init_prompt()
@@ -156,7 +161,39 @@ define([
     }
 
     var createLoading = function () {
-        
+        var div = $("<div>")
+        div.attr("id", "loading")
+        div.css("background-color", "rgba(0, 0, 0, 0.3)")
+        div.css("position", "fixed")
+        div.css("top", "0")
+        div.css("left", "0")
+        div.css("width", "100%")
+        div.css("height", "100%")
+        div.css("z-index", "9999")
+        div.css("text-align", "center")
+        div.css("line-width", "100%")
+        div.css("display", "none")
+        div.text("Loading...")
+
+        var img = $("<img>")
+        img.attr("src", "https://upload.wikimedia.org/wikipedia/commons/a/ad/YouTube_loading_symbol_3_%28transparent%29.gif?20140201131911")
+        img.css("width", "50px")
+        img.css("height", "50px")
+        img.css("position", "absolute")
+        img.css("top", "50%")
+        img.css("left", "50%")
+        img.css("margin-top", "--25px")
+        img.css("margin-left", "-25px")
+        div.append(img)
+        $("body").append(div)
+    }
+
+    var showLoading = function() {
+        $("#loading").show()
+    }
+
+    var hideLoading = function() {
+        $("#loading").hide()
     }
     
     var verifyPromptCell = function(data) {
@@ -206,6 +243,7 @@ define([
             }
         }
         content = JSON.stringify(content)
+        showLoading()
         $.ajax({
             url: base_url + '/code_generate',
             method: 'POST',
@@ -217,11 +255,12 @@ define([
             var data = res[0]
             remove_code_cell(cell_index)
             insert_code_cell(data['code'], cell_index, prompt_id)
-        })
+            hideLoading()
+        }).fail(hideLoading)
     }
 
     var submitCode = function (prompt_id, code) {
-        alert(code)
+        console.log(code)
     }
 
     events.on('delete.Cell', function(event, data) {
@@ -315,6 +354,7 @@ define([
     function load_ipython_extension() {
         addPromptButton()
         addResetButton()
+        createLoading()
     }
     return {
         load_ipython_extension: load_ipython_extension

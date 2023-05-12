@@ -14,7 +14,7 @@ import pandas as pd
 import json
 
 from database import Database
-from config import upload_folder, allowed_extensions
+from config import upload_folder, allowed_extensions, open_api_mode
 from utils import read_code, response, update_prompt, update_prompt_code
 
 from argparse import ArgumentParser
@@ -210,9 +210,11 @@ class CodeGenerationAPI(Resource):
         prompt_content, prompt_support = prompt_preprocessing(prompt_content)
         prompt = instruction + prompt_support + prompt_content + ans + code
         print(prompt)
-            
-        out = response(prompt)
-        #out = "print('test code')"
+        
+        if open_api_mode:
+            out = response(prompt)
+        else:
+            out = "print('test code')"
         print('>>', out)
         res.append({"code": out})
         # update prompt list

@@ -7,3 +7,4 @@ upload_folder = "/home/duclv/project/openai/web_backend/uploads"
 #upload_folder = "./uploads"
 # allowed_extensions = {'csv'}
 allowed_extensions = {}
+open_api_mode = False

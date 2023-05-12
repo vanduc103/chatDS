@@ -4,6 +4,8 @@ BLOCK_PROMPT = false
 BLOCK_REFRESH = false
 REMOVE_ALL = false
 NEW_PROMPT_CELL = ""
+USER_EMAIL = localStorage.getItem("email")
+if (!USER_EMAIL) USER_EMAIL = ""
 prompt_increment = 0
 current_selected = ""
 prompts = {}
@@ -242,7 +244,8 @@ define([
         {
             'prompt': {
                 'prompt_id': prompt_id,
-                'prompt': prompt
+                'prompt': prompt,
+                'email': USER_EMAIL
             }
         }
         content = JSON.stringify(content)
@@ -265,14 +268,15 @@ define([
     var submitCode = function (prompt_id, code) {
         var content = {
             'prompt_id' : prompt_id,
+            'email': USER_EMAIL,
             'code': code
         }
         $.ajax({
-            url: base_url + '/modify_code',
+            url: base_url + '/prompt_update',
             method: 'POST',
             contentType: 'application/json',
             dataType: 'json',
-            data: content
+            data: JSON.stringify(content)
         }).done(hideLoading).fail(hideLoading)
     }
 

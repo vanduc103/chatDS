@@ -42,9 +42,9 @@ export class StartComponent implements OnInit {
 
   start(): void {
     if (!this.validateData()) return
-    console.log(123421)
     let data = this.data
     this._service.initData(data).subscribe((res: any) => {
+      localStorage.setItem("email", this.data["email"])
       if (res["url"]) {
         this._router.navigate(['/chat', res["url"]])
       }

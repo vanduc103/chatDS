@@ -1,4 +1,4 @@
-# INGREX: An Interactive Graph Neural Network Explanation Framework
+# CHAT DS WEB APP - CREATED AND OWN BY ALEX BUI
 
 ## This is the source code for the web application
 

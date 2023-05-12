@@ -263,7 +263,17 @@ define([
     }
 
     var submitCode = function (prompt_id, code) {
-        console.log(code)
+        var content = {
+            'prompt_id' : prompt_id,
+            'code': code
+        }
+        $.ajax({
+            url: base_url + '/modify_code',
+            method: 'POST',
+            contentType: 'application/json',
+            dataType: 'json',
+            data: content
+        }).done(hideLoading).fail(hideLoading)
     }
 
     events.on('delete.Cell', function(event, data) {

@@ -16,7 +16,7 @@ define([
     'base/js/events',
     'base/js/dialog'
 ], function (Jupyter, $, events, dialog) {
-    var base_url = "http://147.47.236.89:39500/api/v1"
+    var base_url = "http://147.47.236.89:39501/api/v1"
     console.log("loading ChatDS")
     // initial content
     var all_cells = Jupyter.notebook.get_cells()

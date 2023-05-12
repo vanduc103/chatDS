@@ -6,7 +6,7 @@ import { StartComponent } from './start/start.component';
 const routes: Routes = [
     {path: '', component: StartComponent, pathMatch: 'full'},
     {path: 'initial', component: StartComponent, pathMatch: 'full'},
-    {path: 'chat', component: DsComponent, pathMatch: 'full'},
+    {path: 'chat/:url', component: DsComponent, pathMatch: 'full'},
 ];
 
 

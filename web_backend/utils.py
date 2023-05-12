@@ -15,12 +15,13 @@ def read_code(prompt_list, cell_idx):
         return code
 
 import openai
-def response(prefix, codex_name="text-davinci-003", 
+def response(openai_key, prefix, codex_name="text-davinci-003", 
                          max_tokens=1024,
                          temperature=0.0,
                          top_p=1.0):
 
-        key = "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"
+        #key = "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"
+        key = openai_key
         try:
             response = openai.Completion.create(
                             engine=codex_name,

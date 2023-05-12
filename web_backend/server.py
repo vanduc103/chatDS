@@ -14,7 +14,7 @@ import pandas as pd
 import json
 
 from database import Database
-from config import upload_folder, allowed_extensions, open_api_mode
+from config import upload_folder, allowed_extensions, open_api_mode, jupyter_url, openai_key
 from utils import read_code, response, update_prompt, update_prompt_code
 
 from argparse import ArgumentParser
@@ -138,7 +138,7 @@ class ProgramInitAPI(Resource):
         global problem
         global data_file
         email = args['email']
-        openai_key = args['openai_key']
+        #openai_key = args['openai_key']
         problem += args['problem_description'] + "\n"
         data_file = args['file_path']
         print(data_file)
@@ -146,7 +146,7 @@ class ProgramInitAPI(Resource):
         # create a new folder for a user
         user_folder = email.split('@')[0]
             
-        return {"url": "http://147.47.236.89:38888/notebooks/project/openai/Demo_ChatDS.ipynb"}
+        return {"url": jupyter_url}
     
 
 class PromptInitAPI(Resource):
@@ -168,8 +168,10 @@ class PromptInitAPI(Resource):
             prompt = instruction + prompt_support + prompt_content + ans + code
             print(prompt)
             
-            out = response(prompt)
-            #out = "print('test code " + str(idx) + "')"
+            if open_api_mode:
+                out = response(openai_key, prompt)
+            else:
+                out = "print('test code " + str(idx) + "')"
             print(out)
             res.append({"prompt_id": idx, "prompt": prompt_content.replace("Q:",""),
                    "code": out})
@@ -212,7 +214,7 @@ class CodeGenerationAPI(Resource):
         print(prompt)
         
         if open_api_mode:
-            out = response(prompt)
+            out = response(openai_key, prompt)
         else:
             out = "print('test code')"
         print('>>', out)

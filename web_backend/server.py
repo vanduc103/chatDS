@@ -15,7 +15,7 @@ import json
 
 from database import Database
 from config import upload_folder, allowed_extensions
-from utils import read_code, response, update_prompt
+from utils import read_code, response, update_prompt, update_prompt_code
 
 from argparse import ArgumentParser
 
@@ -39,7 +39,6 @@ Please follow carefully each sentence in the prompt after the "Q:".
 '''
 
 problem = '''Problem Description:
-### Context\n\nTo Explore more on Regression Algorithm\n\n\n### Content\n\n Each record in the database describes a Boston suburb or town. The data was drawn from the Boston Standard Metropolitan Statistical Area (SMSA) in 1970. The attributes are de\ufb01ned as follows (taken from the UCI Machine Learning Repository1): CRIM: per capita crime rate by town\n2. ZN: proportion of residential land zoned for lots over 25,000 sq.ft.\n3. INDUS: proportion of non-retail business acres per town\n4. CHAS: Charles River dummy variable (= 1 if tract bounds river; 0 otherwise)\n5. NOX: nitric oxides concentration (parts per 10 million)\n1https://archive.ics.uci.edu/ml/datasets/Housing\n123\n20.2. Load the Dataset 124\n6. RM: average number of rooms per dwelling\n7. AGE: proportion of owner-occupied units built prior to 1940\n8. DIS: weighted distances to \ufb01ve Boston employment centers\n9. RAD: index of accessibility to radial highways\n10. TAX: full-value property-tax rate per $10,000\n11. PTRATIO: pupil-teacher ratio by town 12. B: 1000(Bk\u22120.63)2 where Bk is the proportion of blacks by town 13. LSTAT: % lower status of the population\n14. MEDV: Median value of owner-occupied homes in $1000s\nWe can see that the input attributes have a mixture of units.\n\n\n### Acknowledgements\n\nThanks to Dr.Jason
 '''
 
 dataset_metadata = '''Dataset Information:
@@ -54,7 +53,7 @@ A:
 <code>
 '''
 
-data_file = '/home/duclv/project/openai/web_backend/uploads/BostonHousing.csv'
+data_file = ''
 
 initial_templates = [
     'Imports various libraries and modules to perform data preprocessing, data analysis and data visualization.@problem',
@@ -134,12 +133,20 @@ class ProgramInitAPI(Resource):
         """Check if user exists in DB
         """
         args = self.reqparse.parse_args()
+        global email
+        global openai_key
+        global problem
+        global data_file
         email = args['email']
         openai_key = args['openai_key']
-        problem = args['problem_description']
+        problem += args['problem_description'] + "\n"
         data_file = args['file_path']
+        print(data_file)
+        
+        # create a new folder for a user
+        user_folder = email.split('@')[0]
             
-        return {"result": "ok"}
+        return {"url": "http://147.47.236.89:38888/notebooks/project/openai/Demo_ChatDS.ipynb"}
     
 
 class PromptInitAPI(Resource):
@@ -161,8 +168,8 @@ class PromptInitAPI(Resource):
             prompt = instruction + prompt_support + prompt_content + ans + code
             print(prompt)
             
-            #out = response(prompt)
-            out = "print('test code " + str(idx) + "')"
+            out = response(prompt)
+            #out = "print('test code " + str(idx) + "')"
             print(out)
             res.append({"prompt_id": idx, "prompt": prompt_content.replace("Q:",""),
                    "code": out})
@@ -175,18 +182,18 @@ class CodeGenerationAPI(Resource):
     def __init__(self):
         super(CodeGenerationAPI, self).__init__()
         self.reqparse = reqparse.RequestParser()
-        #self.reqparse.add_argument("prompt_id", type=int, location='json', default=0)
         self.reqparse.add_argument("prompt", type=dict, required=True)
 
     def post(self):
         """Code generation for a user prompt
         """
         args = self.reqparse.parse_args()
-        user_prompt = args['prompt']
-        print(user_prompt)
-        prompt_id = user_prompt['prompt_id']
-        prompt_content = user_prompt['prompt']
-        prompt_content = prompt_content.replace("##","").replace("Prompt: ", "").strip()
+        data = args['prompt']
+        print(data)
+        prompt_id = int(data['prompt_id'])
+        prompt_content = data['prompt']
+        email = data.get('email','')
+        prompt_content = prompt_content.replace("##","").replace("Prompt", "").strip()
         if len(prompt_content) == 0:
             return [{"code": ""}]
         
@@ -198,36 +205,38 @@ class CodeGenerationAPI(Resource):
         print('promptlist:', promptlist_len)
         
         res = []
-        code = read_code(prompt_list, prompt_id)
+        code = read_code(prompt_list, prompt_id-1)
         prompt_content = "Q:" + prompt_content
         prompt_content, prompt_support = prompt_preprocessing(prompt_content)
         prompt = instruction + prompt_support + prompt_content + ans + code
         print(prompt)
             
-        #out = response(prompt)
-        out = "print('test code')"
+        out = response(prompt)
+        #out = "print('test code')"
         print('>>', out)
         res.append({"code": out})
         # update prompt list
         update_prompt(prompt_list, prompt_id, instruction, problem, ans, prompt_content, out)
         return res
     
-class PromptSaveAPI(Resource):
+class PromptUpdateAPI(Resource):
     def __init__(self):
         super(PromptSaveAPI, self).__init__()
         self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument("prompt_list", type=json, required=True)
+        self.reqparse.add_argument("prompt", type=dict, required=True)
 
     def post(self):
-        """Save prompt list from web
+        """Update new code for prompt list
         """
         args = self.reqparse.parse_args()
-        prompts = jsons.load(args['prompt_list'])
-        
-        for user_prompt in prompts:
-            prompt_content = "Q:" + user_prompt['prompt']
-            prompt_id = user_prompt['prompt_id']
-            prompt_list[prompt_id]['prompt'] = prompt_content
+        data = args['prompt']
+        print(data)
+        prompt_id = int(data['prompt_id'])
+        prompt_code = data['code']
+        email = data['email']
+        print(prompt_code)
+        # update prompt list
+        update_prompt_code(prompt_list, prompt_id, prompt_code)
             
         return {"result": "ok"}
 
@@ -244,7 +253,7 @@ api.add_resource(ProgramInitAPI, '/api/v1/init', endpoint='init')
 api.add_resource(PromptInitAPI, '/api/v1/prompt_init', endpoint='prompt_init')
 
 api.add_resource(CodeGenerationAPI, '/api/v1/code_generate', endpoint='code_generate')
-api.add_resource(PromptSaveAPI, '/api/v1/prompt_save', endpoint='prompt_save')
+api.add_resource(PromptUpdateAPI, '/api/v1/prompt_update', endpoint='prompt_update')
 api.add_resource(TestAPI, '/api/v1/test', endpoint='test')
 
 if __name__ == '__main__':

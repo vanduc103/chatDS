@@ -55,4 +55,8 @@ def update_prompt(prompt_list, cell_idx, instruction, problem, ans, prompt,
                             'data_source': data_source,
                             'pre_prompt_idx': pre_prompt_idx,
                             }
+
+def update_prompt_code(prompt_list, cell_idx, code):
+    if prompt_list_len(prompt_list) > cell_idx:
+        prompt_list[cell_idx]['generated_code'] = code
     

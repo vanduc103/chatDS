@@ -1,9 +1,14 @@
+/* CREATED AND OWNED BY ALEX BUI*/
+
 BLOCK_PROMPT = false
 BLOCK_REFRESH = false
 REMOVE_ALL = false
+NEW_PROMPT_CELL = ""
 prompt_increment = 0
 current_selected = ""
 prompts = {}
+prompt_to_code = {}
+code_to_prompt = {}
 define([
     'base/js/namespace',
     'jquery',
@@ -27,9 +32,9 @@ define([
     }
     prompt_increment = mx
     var temp = localStorage.getItem("PROMPT_ID_MAP")
-    if (temp)
-        prompts = JSON.parse(temp)
-    console.log(prompts)
+    var code_temp = localStorage.getItem("CODE_TO_PROMPT")
+    if (temp) prompts = JSON.parse(temp)
+    if (code_temp) code_to_prompt = JSON.parse(code_temp)
 
     var get_last_cell_index = function () {
         var last_cell_index = Jupyter.notebook.get_cells().length - 1
@@ -61,7 +66,7 @@ define([
             var prompt_code = cell['code']
             insert_prompt_cell(prompt, last_cell_index, prompt_increment)
             last_cell_index += 1
-            insert_code_cell(prompt_code, last_cell_index)
+            insert_code_cell(prompt_code, last_cell_index, prompt_id)
             last_cell_index += 1
         }
         REMOVE_ALL = false
@@ -90,19 +95,21 @@ define([
         new_cell.select()
         new_cell.element[0].scrollIntoViewIfNeeded()
         new_cell.unselect()
-        localStorage.setItem('NEW_PROMPT_CELL', new_cell.cell_id)
+        NEW_PROMPT_CELL = new_cell.cell_id
         prompts[new_cell.cell_id] = prompt_id
         localStorage.setItem("PROMPT_ID_MAP", JSON.stringify(prompts))
     }
     
-    var insert_code_cell = function (content, index) {
+    var insert_code_cell = function (content, index, prompt_id) {
         var new_cell = Jupyter.notebook.insert_cell_below('code', index)
         new_cell.set_text(content)
         new_cell.execute()
         new_cell.select()
         new_cell.element[0].scrollIntoViewIfNeeded()
         new_cell.unselect()
-        // Jupyter.notebook.execute_cell_and_select_below()
+        // prompt_to_code[prompt_id] = new_cell.cell_id
+        code_to_prompt[new_cell.cell_id] = prompt_id
+        localStorage.setItem("CODE_TO_PROMPT", JSON.stringify(code_to_prompt))
     }
     // Add Toolbar button
     var addPromptButton = function () {
@@ -146,6 +153,10 @@ define([
                 }
             }, 'addplanetjupyter-cell', 'Reload Notebook')
         ])
+    }
+
+    var createLoading = function () {
+        
     }
     
     var verifyPromptCell = function(data) {
@@ -205,8 +216,12 @@ define([
             if (!res) return
             var data = res[0]
             remove_code_cell(cell_index)
-            insert_code_cell(data['code'], cell_index)
+            insert_code_cell(data['code'], cell_index, prompt_id)
         })
+    }
+
+    var submitCode = function (prompt_id, code) {
+        alert(code)
     }
 
     events.on('delete.Cell', function(event, data) {
@@ -263,8 +278,7 @@ define([
         }
         /*
         setTimeout(function() {
-            var even2 = localStorage.getItem("NEW_PROMPT_CELL")
-            if (even2 != cell_id) {
+            if (NEW_PROMPT_CELL != cell_id) {
                 dialog.modal({
                     title: 'Confirm Action',
                     body: "If you modified this prompt, all following code will be affected. Are you sure you want to perform this action?",
@@ -280,7 +294,7 @@ define([
                 })
             }
             setTimeout(function() {
-                localStorage.removeItem('NEW_PROMPT_CELL')
+                NEW_PROMPT_CELL = ""
             }, 100)
         }, 100)
         */
@@ -289,6 +303,11 @@ define([
 
     events.on('execute.CodeCell', function(event, data) {
         var cell_id = data.cell.cell_id
+        var prompt_id = code_to_prompt[cell_id]
+        if (prompt_id) {
+            var content = data.cell.get_text().trim()
+            submitCode(prompt_id, content)
+        }
     })
 
 

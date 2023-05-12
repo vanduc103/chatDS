@@ -1,4 +1,5 @@
-# planet_jupyter
+
+# CHATDS_JUPYTER - THIS PLUGIN IS CREATED AND OWNED BY ALEX BUI
 Sample Jupyter Notebook Extension created for the [Creating a Jupyter Notebook Extension — Part 1](https://medium.com/@aneesha/creating-a-jupyter-notebook-extension-part-1-31c72032cad) blog post.
 
 ## Instructions

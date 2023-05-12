@@ -14,7 +14,14 @@ export class Services{
     }
 
     initData(data: any) {
-        this.http.post(this.url + "/upload", data, {"headers": httpOptions.headers})
+        return this.http.post(this.url + "/init", data, {"headers": httpOptions.headers})
     }
-    
+
+    uploadData(form: any) {
+        return this.http.post(this.url + '/upload_file', form)
+    }
+
+    test() {
+        return this.http.get(this.url + '/test')
+    }
 }

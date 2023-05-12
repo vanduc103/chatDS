@@ -12,3 +12,10 @@ Run `npm install` to initialize the project.
 Run `ng serve --port 4200 --host 0.0.0.0` for a dev server. Navigate to `http://your_ip_addr:4200/`. You can change port 4200 to any ports.
 
 
+## Need to open jupyter to be loaded into iframe
+jupyter notebook --generate-config
+c.NotebookApp.tornado_settings = {
+    'headers': {
+        'Content-Security-Policy': "frame-ancestors 'self' *"
+    }
+}

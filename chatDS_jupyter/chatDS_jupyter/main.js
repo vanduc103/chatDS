@@ -12,6 +12,7 @@ define([
 ], function (Jupyter, $, events, dialog) {
     var base_url = "http://147.47.236.89:39500/api/v1"
     console.log("loading ChatDS")
+    // initial content
     var all_cells = Jupyter.notebook.get_cells()
     var mx = 0
     for (var i = 0; i < all_cells.length; i++) {
@@ -25,6 +26,11 @@ define([
         } 
     }
     prompt_increment = mx
+    var temp = localStorage.getItem("PROMPT_ID_MAP")
+    if (temp)
+        prompts = JSON.parse(temp)
+    console.log(prompts)
+
     var get_last_cell_index = function () {
         var last_cell_index = Jupyter.notebook.get_cells().length - 1
         if (last_cell_index <= 0)
@@ -39,6 +45,11 @@ define([
         }
     }
     var initWorkingSpace = function (content) {
+        for (var key in localStorage) {
+            if (key.startsWith("current_text")) {
+                localStorage.removeItem(key)
+            }
+        }
         removeAll()
         var last_cell_index = get_last_cell_index()
         if (!content) return
@@ -81,10 +92,11 @@ define([
         new_cell.unselect()
         localStorage.setItem('NEW_PROMPT_CELL', new_cell.cell_id)
         prompts[new_cell.cell_id] = prompt_id
+        localStorage.setItem("PROMPT_ID_MAP", JSON.stringify(prompts))
     }
     
     var insert_code_cell = function (content, index) {
-        var new_cell = Jupyter.notebook.insert_cell_above('code', index)
+        var new_cell = Jupyter.notebook.insert_cell_below('code', index)
         new_cell.set_text(content)
         new_cell.execute()
         new_cell.select()
@@ -166,7 +178,14 @@ define([
         }
     })
 
-    var submitPrompt = function(prompt_id, prompt) {
+    // remove code cell corresponding to a markdown cell_index
+    var remove_code_cell = function(cell_index) {
+        var code_cell = Jupyter.notebook.get_cell(cell_index+1)
+        if (code_cell.cell_type == 'code') 
+            Jupyter.notebook.delete_cell(cell_index+1)
+    }
+
+    var submitPrompt = function(cell_index, prompt_id, prompt) {
         prompt = prompt.replace("## Prompt","")
         var content = 
         {
@@ -185,8 +204,8 @@ define([
         }).done(function(res) {
             if (!res) return
             var data = res[0]
-            var last_cell_index = get_last_cell_index()
-            insert_code_cell(data['code'], last_cell_index)
+            remove_code_cell(cell_index)
+            insert_code_cell(data['code'], cell_index)
         })
     }
 
@@ -215,9 +234,7 @@ define([
                     'OK': {
                         'class': 'btn-primary',
                         'click': function() {
-                            var code_cell = Jupyter.notebook.get_cell(cell_index+1)
-                            if (code_cell.cell_type == 'code') 
-                                Jupyter.notebook.delete_cell(cell_index+1)
+                            remove_code_cell(cell_in_index)
                         }
                     }
                 }
@@ -234,7 +251,15 @@ define([
         if (prev_text) {
             prev_text = prev_text.trim()
             if (prev_text == content) return
-            submitPrompt(prompts[cell_id], content)
+            var cells = Jupyter.notebook.get_cells()
+            var cell_index = 0
+            for (var i = 0; i < cells.length; i++) {
+                if (cells[i].cell_id != cell_id)
+                    continue
+                cell_index = i
+                break
+            }
+            submitPrompt(cell_index, prompts[cell_id], content)
         }
         /*
         setTimeout(function() {

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { ActivatedRoute, Params } from '@angular/router'
 import { Services } from '../app.services'
 import { Global } from '../global'
 
@@ -10,18 +11,18 @@ import { Global } from '../global'
 })
 export class DsComponent implements OnInit {
   
-  constructor(private _service: Services, public config: Global, public sanitizer: DomSanitizer) {
-    this.config.fullFrame = true
-  }
   urlSafe: SafeResourceUrl;
-  url: string = "http://147.47.236.89:8888/tree"
+  url: string = "http://147.47.236.89:38888/tree"
+  constructor(private _service: Services, public config: Global, public sanitizer: DomSanitizer, private route: ActivatedRoute) {
+    this.config.fullFrame = true
+    let self = this
+    this.route.params.subscribe((params: Params) => {
+        self.urlSafe= self.sanitizer.bypassSecurityTrustResourceUrl(params["url"])
+    })
+  }
+    
   ngOnInit(): void {
     let self = this
-    this._service.test().subscribe((res: any) => {
-      self.urlSafe= self.sanitizer.bypassSecurityTrustResourceUrl(res['url']);
-    })
-    
-
   }
   
 }

@@ -45,8 +45,8 @@ export class StartComponent implements OnInit {
     console.log(123421)
     let data = this.data
     this._service.initData(data).subscribe((res: any) => {
-      if (res["result"] == "ok") {
-        this._router.navigate(['/chat'])
+      if (res["url"]) {
+        this._router.navigate(['/chat', res["url"]])
       }
     })
   }

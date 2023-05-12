@@ -30,7 +30,7 @@ api = Api(app)
 prompt_list = [None] * 100
 openai_key = ''
 
-instruction = '''Instruction: You are a code generation assistant for data science problem. 
+instruction = '''Instruction: You are the code generation assistant for a data science problem. 
 Code is in Python. Please import all required libraries.
 The data science problem is in the "Problem Description" part.
 The dataset information is in the "Dataset Information" part.
@@ -55,19 +55,35 @@ A:
 '''
 
 data_file = '/home/duclv/project/openai/web_backend/uploads/BostonHousing.csv'
-data = None
 
 initial_templates = [
-    'Imports various libraries and modules to perform data preprocessing, data analysis and data visualization.',
+    'Imports various libraries and modules to perform data preprocessing, data analysis and data visualization.@problem',
     'Reading the dataset in {} file into a DataFrame and Show first 5 rows.',
     'Show dataset information.',
     'Check null values.',
 ]
 
-
-def running_code(prompt_list, prompt_id):
-    return None
+def prompt_preprocessing(prompt):
+    global dataset_metadata
+    global data_values
     
+    prompt_support = ''
+    if "@problem" in prompt:
+        prompt = prompt.replace("@problem", "").strip()
+        prompt_support += problem
+    if "@metadata" in prompt:
+        prompt = prompt.replace("@metadata", "").strip()
+        dataset_metadata += get_dataset_metadata(data_file)
+        prompt_support += dataset_metadata
+    if "@data-values" in prompt:
+        instr = prompt[prompt.index("@data-values"):]
+        prompt = prompt.replace(instr, "").strip()
+        col_name = instr.split("/")[1]
+        col_names = [col for col in col_name.split(",")]
+        data_values += get_dataset_values(data_file, col_names)
+        prompt_support += data_values
+        
+    return prompt, prompt_support
 
 def get_dataset_metadata(data_file):
     df = pd.read_csv(data_file)
@@ -79,7 +95,7 @@ def get_dataset_metadata(data_file):
 
 def get_dataset_values(data_file, col_name):
     df = pd.read_csv(data_file)
-    values = df[col_name].count_values()
+    values = df[col_name].value_counts()
     return str(values)
 
 def allowed_file(filename):
@@ -136,15 +152,18 @@ class PromptInitAPI(Resource):
         """
         args = self.reqparse.parse_args()
         res = []
+        global prompt_list
         for idx in range(len(initial_templates)):
             template = initial_templates[idx]
             code = read_code(prompt_list, idx-1)
             prompt_content = 'Q:' + template.format(data_file)
-            prompt = instruction + problem + prompt_content + ans
+            prompt_content, prompt_support = prompt_preprocessing(prompt_content)
+            prompt = instruction + prompt_support + prompt_content + ans + code
             print(prompt)
             
             #out = response(prompt)
             out = "print('test code " + str(idx) + "')"
+            print(out)
             res.append({"prompt_id": idx, "prompt": prompt_content.replace("Q:",""),
                    "code": out})
             # update prompt list
@@ -168,34 +187,27 @@ class CodeGenerationAPI(Resource):
         prompt_id = user_prompt['prompt_id']
         prompt_content = user_prompt['prompt']
         prompt_content = prompt_content.replace("##","").replace("Prompt: ", "").strip()
+        if len(prompt_content) == 0:
+            return [{"code": ""}]
         
         promptlist_len = 0
+        global prompt_list
         for i in range(len(prompt_list)):
             if prompt_list[i] is not None:
                 promptlist_len += 1
         print('promptlist:', promptlist_len)
         
-        need_dataset_metadata = False
-        need_data_values = False
-        global dataset_metadata
-        global data_values
-        
-        if need_dataset_metadata:
-            dataset_metadata += get_dataset_metadata(data_file)
-        if need_data_values:
-            col_name = ['']
-            data_values += get_dataset_values(data_file, col_name)
-        
         res = []
         code = read_code(prompt_list, prompt_id)
         prompt_content = "Q:" + prompt_content
-        prompt = instruction + dataset_metadata + data_values + prompt_content + ans
+        prompt_content, prompt_support = prompt_preprocessing(prompt_content)
+        prompt = instruction + prompt_support + prompt_content + ans + code
         print(prompt)
             
         #out = response(prompt)
         out = "print('test code')"
-        res.append({"prompt_id": prompt_id, "prompt": prompt,
-                   "code": out})
+        print('>>', out)
+        res.append({"code": out})
         # update prompt list
         update_prompt(prompt_list, prompt_id, instruction, problem, ans, prompt_content, out)
         return res

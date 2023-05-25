@@ -184,7 +184,7 @@ class PromptInitAPI(Resource):
             # update prompt list
             update_prompt(prompt_list, idx, instruction, problem, ans, prompt_content, out)
             # write code
-            write_code(nb_file, prompt_list, idx)
+            #write_code(nb_file, prompt_list, idx)
             
         return res
 
@@ -230,7 +230,7 @@ class CodeGenerationAPI(Resource):
         # update prompt list
         update_prompt(prompt_list, prompt_id, instruction, problem, ans, prompt_content, out)
         # write code
-        write_code(nb_file, prompt_list, prompt_id)
+        #write_code(nb_file, prompt_list, prompt_id)
         
         return res
     
@@ -276,7 +276,7 @@ class UserFeedbackAPI(Resource):
         # update prompt list
         update_prompt(prompt_list, prompt_id, instruction, problem, ans, prompt_content, out)
         # write code
-        write_code(nb_file, prompt_list, prompt_id)
+        #write_code(nb_file, prompt_list, prompt_id)
         
         return res
     
@@ -305,7 +305,7 @@ class PromptUpdateAPI(Resource):
         # update prompt list
         update_prompt_code(prompt_list, prompt_id, prompt_code)
         # write code
-        write_code(nb_file, prompt_list, prompt_id)
+        #write_code(nb_file, prompt_list, prompt_id)
             
         return {"result": "ok"}
 

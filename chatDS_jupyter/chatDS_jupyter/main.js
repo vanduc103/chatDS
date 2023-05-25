@@ -5,6 +5,7 @@ BLOCK_REFRESH = false
 REMOVE_ALL = false
 NEW_PROMPT_CELL = ""
 USER_EMAIL = localStorage.getItem("email")
+REQUIRE_UPDATE_PROMPT = true
 if (!USER_EMAIL) USER_EMAIL = ""
 prompt_increment = 0
 current_selected = ""
@@ -18,7 +19,7 @@ define([
     'base/js/events',
     'base/js/dialog'
 ], function (Jupyter, $, events, dialog) {
-    var base_url = "http://147.47.236.89:39501/api/v1"
+    var base_url = "http://147.47.236.89:39500/api/v1"
     console.log("loading ChatDS")
     // initial content
     var all_cells = Jupyter.notebook.get_cells()
@@ -238,7 +239,7 @@ define([
             Jupyter.notebook.delete_cell(cell_index+1)
     }
 
-    var submitPrompt = function(cell_index, prompt_id, prompt) {
+    var submitPrompt = function(cell_index, prompt_id, prompt, prompt_cell_id, prompt_cell) {
         prompt = prompt.replace("## Prompt","")
         var content = 
         {
@@ -251,7 +252,8 @@ define([
         content = JSON.stringify(content)
         showLoading()
         $.ajax({
-            url: base_url + '/code_generate',
+            // url: base_url + '/code_generate',
+            url: base_url + '/user_feedback',
             method: 'POST',
             contentType: 'application/json',
             dataType: 'json',
@@ -259,8 +261,21 @@ define([
         }).done(function(res) {
             if (!res) return
             var data = res[0]
+            prompt_content = data['prompt']
             remove_code_cell(cell_index)
             insert_code_cell(data['code'], cell_index, prompt_id)
+            if (prompt_content) {
+                REQUIRE_UPDATE_PROMPT = false 
+                current_text[prompt_cell_id] = (prompt_id + 1) + ":" + prompt_content
+                prompt_content = "## Prompt " + current_text[prompt_cell_id]
+                prompt_cell.set_text(prompt_content)
+                prompt_cell.execute()
+
+                setTimeout(function(){
+                    REQUIRE_UPDATE_PROMPT = true
+                }, 200)
+            }
+            
             hideLoading()
         }).fail(hideLoading)
     }
@@ -317,23 +332,27 @@ define([
     })
 
     events.on('rendered.MarkdownCell', function(event, data) {
+        if (!REQUIRE_UPDATE_PROMPT) { // for specific case of updating prompt from server
+            return 
+        }
         var cell_id = data.cell.cell_id
         var content = data.cell.get_text().trim()
         if (!prompts.hasOwnProperty(cell_id)) return
         var prev_text = current_text[cell_id]
         // localStorage.getItem('current_text' + cell_id)
         if (prev_text) {
-            prev_text = prev_text
             if (prev_text == content) return
             var cells = Jupyter.notebook.get_cells()
             var cell_index = 0
+            prompt_cell = null
             for (var i = 0; i < cells.length; i++) {
                 if (cells[i].cell_id != cell_id)
                     continue
                 cell_index = i
+                prompt_cell = cells[i]
                 break
             }
-            submitPrompt(cell_index, prompts[cell_id], content)
+            submitPrompt(cell_index, prompts[cell_id], content, cell_id, prompt_cell)
         }
         /*
         setTimeout(function() {
@@ -369,6 +388,8 @@ define([
             submitCode(prompt_id, content)
         }
     })
+
+    events.on()
 
 
     // Run on start

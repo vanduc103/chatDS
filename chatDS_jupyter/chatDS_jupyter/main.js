@@ -31,6 +31,7 @@ define([
         content = content.split(" ")
         if (content.length > 1) {
             var new_mx = parseInt(content[2])
+            all_cells[i].cell_id = 'prompt_id_' + new_mx 
             if (new_mx && mx < new_mx) mx = new_mx
         } 
     }
@@ -54,11 +55,6 @@ define([
         }
     }
     var initWorkingSpace = function (content) {
-        // for (var key in localStorage) {
-        //     if (key.startsWith("current_text")) {
-        //         localStorage.removeItem(key)
-        //     }
-        // }
         removeAll()
         var last_cell_index = get_last_cell_index()
         if (!content) return
@@ -95,11 +91,19 @@ define([
         for (var i = 0; i < all_cells.length; i++) { 
             all_cells[i].unselect()
         }
-        if (!msg) {
-            msg = "## Prompt " + (prompt_id + 1)
-        }
         var notebook = Jupyter.notebook
         var new_cell = notebook.insert_cell_below('markdown', new_cell_index)
+        if (!msg) {
+            msg = "## Prompt " + (prompt_id + 1)
+            new_cell.cell_id = 'prompt_id_' + (prompt_id + 1)
+        } else {
+            var idx = msg.split(" ")
+            if (idx.length > 1) {
+                idx = parseInt(idx[2])
+                new_cell.cell_id = 'prompt_id_' + idx
+            }
+        }
+        
         new_cell.set_text(msg)
         new_cell.execute()
         new_cell.select()
@@ -270,7 +274,6 @@ define([
                 prompt_content = "## Prompt " + current_text[prompt_cell_id]
                 prompt_cell.set_text(prompt_content)
                 prompt_cell.execute()
-
                 setTimeout(function(){
                     REQUIRE_UPDATE_PROMPT = true
                 }, 200)
@@ -388,9 +391,6 @@ define([
             submitCode(prompt_id, content)
         }
     })
-
-    events.on()
-
 
     // Run on start
     function load_ipython_extension() {

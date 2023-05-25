@@ -202,7 +202,7 @@ class CodeGenerationAPI(Resource):
         print(data)
         prompt_id = int(data['prompt_id'])
         prompt_content = data['prompt']
-        email = data.get('email','')
+        #email = data.get('email','')
         prompt_content = prompt_content.replace("##","").replace("Prompt", "").strip()
         if len(prompt_content) == 0:
             return [{"code": ""}]
@@ -227,6 +227,52 @@ class CodeGenerationAPI(Resource):
             out = "print('test code')"
         print('>>', out)
         res.append({"code": out})
+        # update prompt list
+        update_prompt(prompt_list, prompt_id, instruction, problem, ans, prompt_content, out)
+        # write code
+        write_code(nb_file, prompt_list, prompt_id)
+        
+        return res
+    
+class UserFeedbackAPI(Resource):
+    def __init__(self):
+        super(UserFeedbackAPI, self).__init__()
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument("prompt", type=dict, required=True)
+
+    def post(self):
+        """Code generation for a user prompt
+        """
+        args = self.reqparse.parse_args()
+        data = args['prompt']
+        print(data)
+        prompt_id = int(data['prompt_id'])
+        prompt_content = data['prompt']
+        #email = data.get('email','')
+        prompt_content = prompt_content.replace("##","").replace("Prompt", "").strip()
+        if len(prompt_content) == 0:
+            return [{"id": prompt_id, "prompt": prompt_content, "code": ""}]
+        
+        promptlist_len = 0
+        global prompt_list
+        global nb_file
+        for i in range(len(prompt_list)):
+            if prompt_list[i] is not None:
+                promptlist_len += 1
+        print('promptlist:', promptlist_len)
+        
+        res = []
+        code = read_code(prompt_list, prompt_id-1)
+        prompt_content = "Q:" + prompt_content
+        prompt_content, prompt_support = prompt_preprocessing(prompt_content)
+        prompt = instruction + prompt_support + prompt_content + ans + code
+        print(prompt)
+        if open_api_mode:
+            out = response(openai_key, prompt)
+        else:
+            out = "print('test code of prompt {}')".format(prompt_id)
+        print('>>', out)
+        res.append({"id": prompt_id, "prompt": prompt_content, "code": code})
         # update prompt list
         update_prompt(prompt_list, prompt_id, instruction, problem, ans, prompt_content, out)
         # write code
@@ -276,6 +322,7 @@ api.add_resource(ProgramInitAPI, '/api/v1/init', endpoint='init')
 api.add_resource(PromptInitAPI, '/api/v1/prompt_init', endpoint='prompt_init')
 
 api.add_resource(CodeGenerationAPI, '/api/v1/code_generate', endpoint='code_generate')
+api.add_resource(UserFeedbackAPI, '/api/v1/user_feedback', endpoint='user_feedback')
 api.add_resource(PromptUpdateAPI, '/api/v1/prompt_update', endpoint='prompt_update')
 api.add_resource(TestAPI, '/api/v1/test', endpoint='test')
 

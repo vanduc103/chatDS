@@ -1,0 +1,62 @@
+Generate a workflow given problem description, dataset file, dataset metadata and workflow type.
+
+Problem description:
+**570 cancer cells and 30 features to determine whether the cancer cells in our data are benign or malignant**
+**Our cancer data contains 2 types of cancers: 1. benign cancer (B) and 2. malignant cancer (M).**
+
+Dataset file: Cancer_Data.csv
+
+Dataset metadata:
+df = pd.read_csv('Cancer_Data.csv')
+df.info()
+Data columns (total 33 columns):
+ #   Column                   Non-Null Count  Dtype  
+---  ------                   --------------  -----  
+ 0   id                       569 non-null    int64  
+ 1   diagnosis                569 non-null    object 
+ 2   radius_mean              569 non-null    float64
+ 3   texture_mean             569 non-null    float64
+ 4   perimeter_mean           569 non-null    float64
+ 5   area_mean                569 non-null    float64
+ 6   smoothness_mean          569 non-null    float64
+ 7   compactness_mean         569 non-null    float64
+ 8   concavity_mean           569 non-null    float64
+ 9   concave points_mean      569 non-null    float64
+ 10  symmetry_mean            569 non-null    float64
+ 11  fractal_dimension_mean   569 non-null    float64
+ 12  radius_se                569 non-null    float64
+ 13  texture_se               569 non-null    float64
+ 14  perimeter_se             569 non-null    float64
+ 15  area_se                  569 non-null    float64
+ 16  smoothness_se            569 non-null    float64
+ 17  compactness_se           569 non-null    float64
+ 18  concavity_se             569 non-null    float64
+ 19  concave points_se        569 non-null    float64
+ 20  symmetry_se              569 non-null    float64
+ 21  fractal_dimension_se     569 non-null    float64
+ 22  radius_worst             569 non-null    float64
+ 23  texture_worst            569 non-null    float64
+ 24  perimeter_worst          569 non-null    float64
+ 25  area_worst               569 non-null    float64
+ 26  smoothness_worst         569 non-null    float64
+ 27  compactness_worst        569 non-null    float64
+ 28  concavity_worst          569 non-null    float64
+ 29  concave points_worst     569 non-null    float64
+ 30  symmetry_worst           569 non-null    float64
+ 31  fractal_dimension_worst  569 non-null    float64
+ 32  Unnamed: 32              0 non-null      float64
+dtypes: float64(31), int64(1), object(1)
+
+Workflow type: ML-focused
+
+Workflow generation:
+"replaces the values in the 'diagnosis' column with binary values.",
+'creates a pie chart showing the percentage of benign and malignant diagnoses in the dataset.',
+'creates a heatmap to visualize the correlation between different variables in the dataframe.',
+'calculates the correlation between the columns of a dataframe.',
+'imports various machine learning models, preprocessing tools, and metrics for model evaluation.',
+'dropping the "unnamed: 32" and "id" columns from the dataframe.',
+"splits the dataframe into two variables, features x which contains all columns except target value 'diagnosis' and labels y which contains only the target 'diagnosis' column.",
+'splits the data into training and validation sets, with a test size of 33%, a random state of 43, and stratified by the target variable.',
+'calculates the accuracy of a naive bayes model and stores it in a dictionary.',
+'calculate the accuracy of the linear discriminant analysis model.'

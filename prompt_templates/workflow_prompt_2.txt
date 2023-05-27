@@ -1,0 +1,49 @@
+Generate a workflow given problem description, dataset file, dataset metadata and workflow type.
+
+Problem description:
+Gun ownership in the United States is the highest in the world, and constitutionally protected by the Second Amendment to the United States Constitution. Firearms are widely used in the United States for self-defence, hunting, and recreational uses, such as target shooting.
+
+Dataset file: shooting-1982-2023.csv
+
+Dataset metadata:
+df = pd.read_csv('shooting-1982-2023.csv')
+df.info()
+Data columns (total 21 columns):
+ #   Column                            Non-Null Count  Dtype  
+---  ------                            --------------  -----  
+ 0   case                              141 non-null    object 
+ 1   location                          141 non-null    object 
+ 2   date                              141 non-null    object 
+ 3   summary                           141 non-null    object 
+ 4   fatalities                        141 non-null    int64  
+ 5   injured                           141 non-null    object 
+ 6   total_victims                     141 non-null    object 
+ 7   location.1                        141 non-null    object 
+ 8   age_of_shooter                    139 non-null    float64
+ 9   prior_signs_mental_health_issues  113 non-null    object 
+ 10  mental_health_details             99 non-null     object 
+ 11  weapons_obtained_legally          124 non-null    object 
+ 12  where_obtained                    95 non-null     object 
+ 13  weapon_type                       141 non-null    object 
+ 14  weapon_details                    115 non-null    object 
+ 15  race                              128 non-null    object 
+ 16  gender                            141 non-null    object 
+ 17  latitude                          126 non-null    float64
+ 18  longitude                         126 non-null    float64
+ 19  type                              141 non-null    object 
+ 20  year                              141 non-null    int64  
+dtypes: float64(3), int64(2), object(16)
+
+Workflow type: visualization-focused
+
+Workflow generation:
+"creates new columns from the 'date' column in the dataframe, including year, quarter, half, month_name, and day_of_week, and displays the first five rows of the dataframe.",
+'create the graph to shows the number of cases by year.',
+'creates a bar chart to visualize the number of cases by quarter.',
+'create the graph to shows the number of cases by half of year.',
+'plot the graph shows the number of cases by month name.',
+'plot the graph shows the number of cases by day of week.',
+'plots the number of cases by location using plotly express.',
+'plot the bar chart shows the number of cases by location.',
+'plot barchart to shows the number of cases by type.',
+'plot barchart to shows the number of cases by gender.',

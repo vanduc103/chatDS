@@ -1,0 +1,119 @@
+Extract keyphrases and their categories from following prompts given problem description, dataset file and dataset metadata.
+
+Problem description:
+Gun ownership in the United States is the highest in the world, and constitutionally protected by the Second Amendment to the United States Constitution. Firearms are widely used in the United States for self-defence, hunting, and recreational uses, such as target shooting.
+
+Dataset file: shooting-1982-2023.csv
+
+Dataset metadata:
+df = pd.read_csv('shooting-1982-2023.csv')
+df.info()
+Data columns (total 21 columns):
+ #   Column                            Non-Null Count  Dtype  
+---  ------                            --------------  -----  
+ 0   case                              141 non-null    object 
+ 1   location                          141 non-null    object 
+ 2   date                              141 non-null    object 
+ 3   summary                           141 non-null    object 
+ 4   fatalities                        141 non-null    int64  
+ 5   injured                           141 non-null    object 
+ 6   total_victims                     141 non-null    object 
+ 7   location.1                        141 non-null    object 
+ 8   age_of_shooter                    139 non-null    float64
+ 9   prior_signs_mental_health_issues  113 non-null    object 
+ 10  mental_health_details             99 non-null     object 
+ 11  weapons_obtained_legally          124 non-null    object 
+ 12  where_obtained                    95 non-null     object 
+ 13  weapon_type                       141 non-null    object 
+ 14  weapon_details                    115 non-null    object 
+ 15  race                              128 non-null    object 
+ 16  gender                            141 non-null    object 
+ 17  latitude                          126 non-null    float64
+ 18  longitude                         126 non-null    float64
+ 19  type                              141 non-null    object 
+ 20  year                              141 non-null    int64  
+dtypes: float64(3), int64(2), object(16)
+
+Prompt: 'imports the necessary libraries for data analysis and visualization.'
+Keyphrases: 'import the necessary libraries': import library, 'data analysis': library type, 'visualization': library type
+
+Prompt: 'imports a dataset from a file shooting-1982-2023.csv and displays the first few rows.'
+Keyphrases: 'import a dataset': read dataset, 'shooting-1982-2023.csv': dataset file, 'display': view data, 'first few rows': view data target
+
+Prompt: 'groups the data by case and then sorts the fatalities in descending order to find the top 10 cases by fatalities.'
+Keyphrases: 'group the data': analyze data, 'case': data features, 'sort': analyze data, 'fatalities': data features, 'descending order': analyze data target, 'find': analyze data, 'top 10 cases': analyze data target
+
+Prompt: 'creates a horizontal bar graph using plotly, with the xaxis representing the values of the top 10 fatalities and the yaxis representing the index of those fatalities.'
+Keyphrases: 'create a graph': visualize data, 'a horizontal bar graph': visualization graph, 'plotly': visualization library, 'xaxis': visualization parameters, 'values of the top 10': visualization target, 'fatalities': data features, 'yaxis': visualization parameters, 'index': visualization target
+
+Prompt: "creates new columns from the 'date' column in the dataframe, including year, quarter, half, month_name, and day_of_week, and displays the first five rows of the dataframe."
+Keyphrases: 'create new column': transform data, "'date' column": data features, 'year': feature values, 'quarter': feature values, 'half': feature values, 'month_name': feature values, 'day_of_week': feature values, 'print': view data, 'first five rows': view data target
+
+Prompt: 'create the graph to shows the number of cases by year.'
+Keyphrases: 'create the graph': visualize data, 'number of cases': visualization target, 'year': data features
+
+Prompt: 'creates a bar chart to visualize the number of cases by quarter.'
+Keyphrases: 'create a chart': visualize data, 'bar chart': visualization graph, 'number of cases': visualization target, 'quarter': data features
+
+Prompt: 'create the graph to shows the number of cases by half of year.'
+Keyphrases: 'create the graph': visualize data, 'number of cases': visualization target, 'half of year': data features
+
+Prompt: 'plot the graph shows the number of cases by month name.'
+Keyphrases: 'plot the graph': visualize data, 'number of cases': visualization target, 'month name': data features
+
+Prompt: 'plot the graph shows the number of cases by day of week.'
+Keyphrases: 'plot the graph': visualize data, 'number of cases': visualization target, 'day of week': data features
+
+Prompt: 'plots the number of cases by location using plotly express.'
+Keyphrases: 'plot': visualize data, 'number of cases': visualization target, 'location': data features, 'plotly express': visualization library
+
+Prompt: 'plot the bar chart shows the number of cases by location.'
+Keyphrases: 'plot the chart': visualize data, 'bar chart': visualization graph, 'number of cases': visualization target, 'location': data features
+
+Prompt: 'plot barchart to shows the number of cases by type.'
+Keyphrases: 'plot': visualize data, 'barchart': visualization graph, 'number of cases': visualization target, 'type': data features
+
+Prompt: 'plot barchart to shows the number of cases by gender.'
+Keyphrases: 'plot': visualize data, 'barchart': visualization graph, 'number of cases': visualization target, 'gender': data features
+
+Prompt: "replaces the values of the 'gender' column in the dataframe with more descriptive labels."
+Keyphrases: 'replace the values': transform data, "the 'gender' column": data features, 'descriptive labels': transform data target
+
+Prompt: "replaces the values '', 'unknown', 'unclear ', and 'yes' with 'unclear' and 'yes' respectively in the 'prior_signs_mental_health_issues' column, and then counts the values in the column."
+Keyphrases: 'replace the values': transform data, "the 'prior_signs_mental_health_issues' column": data features, "'', 'unknown', 'unclear ', and 'yes'": object values, "'unclear' and 'yes'": object values, 'count the values': view data
+
+Prompt: 'displays the first five rows of the dataframe in a transposed format.'
+Keyphrases: 'display': view data, 'first five rows': view data target, 'transposed format': view data target
+
+Prompt: 'replaces the values in the "weapons_obtained_legally" column with more concise values, such as "yes" and "unknown".'
+Keyphrases: 'replace the values': transform data, 'the "weapons_obtained_legally" column': data features, '"yes" and "unknown"': object values
+
+Prompt: 'replaces all \'\' values in the \'where_obtained\' column with "unknown" and then counts the values in the column.'
+Keyphrases: 'replace': transform data, "where_obtained column": data features, "'\'": object values, '"unknown"': object values, 'count the values': view data
+
+Prompt: 'creates age groups for the age of the shooter and counts the number of shooters in each group.'
+Keyphrases: 'create': transform data, "age groups": data features, 'age': data features
+
+Prompt: 'creates a new column in the dataframe to store the decade of each date, and then converts the decade to a string format.'
+Keyphrases: 'create': transform data, "decade": feature values, 'date': data features, 'convert': transform data
+
+Prompt: 'splits the "summary" column of the dataframe into three new columns, renames them, and then concatenates them with the original dataframe.'
+Keyphrases: 'split': transform data, '"summary" column': data features, "rename": transform data, 'concatenate': transform data
+
+Prompt: 'creates a map with markers for each row in the dataframe, displaying information about the case such as description, fatalities, month, total victims, age, injured, year, gender, day of week, and type.'
+Keyphrases: 'create a map': visualize data, 'description': data features, 'fatalities': data features, 'month': data features, 'total victims': data features, 'age': data features, 'injured': data features, 'year': data features, 'gender': data features, 'day of week': data features, 'type': data features
+
+Prompt: 'imports the necessary libraries and modules for data analysis and visualization, and prints out the file paths of the files in the input directory.'
+Keyphrases: 'import the necessary libraries': import library, 'data analysis': library type, 'visualization': library type, 'print out': view data
+
+Prompt: 'reads in a csv file containing data on shootings from 1982 to 2023 and prints out the shape of the dataframe and the first 5 rows.'
+Keyphrases: 'read in a csv file': read dataset, 'shootings from 1982 to 2023': data file, 'print': view data, 'the shape of': view data target
+
+Prompt: "drops the row with the value 'tk' in the 'total_victims' column from the dataframe."
+Keyphrases: 'drop': transform data, "'tk'": object values, "the 'total_victims' column": data features
+
+Prompt: "fills missing values in the 'age_of_shooter' column with the median value and converts the 'injured' and 'total_victims' columns to integers."
+Keyphrases: 'fill missing': transform data, "the 'age_of_shooter' column": data features, 'convert': transform data
+
+Prompt: 'creates a figure with six histograms, showing the distributions of fatalities, injured, total victims, age of shooter, and year of shooting data.'
+Keyphrases: 'create a figure': visualize data, 'histograms': visualization graph

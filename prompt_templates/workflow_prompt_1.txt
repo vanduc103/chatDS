@@ -1,0 +1,37 @@
+Generate a workflow given problem description, dataset file, dataset metadata and workflow type.
+
+Problem description:
+This dataset has all the countries listed with their continents, GDP, population and GDPpercapita.
+We can use GDP per capita as a label and play with the dataset.
+Using linear regression , is there a possibility to explore in terms of reciprocal relation between the features.
+
+Dataset file: countries.csv
+
+Dataset metadata:
+df = pd.read_csv('countries.csv')
+df.info()
+Data columns (total 8 columns):
+ #   Column          Non-Null Count  Dtype  
+---  ------          --------------  -----  
+ 0   Rank            212 non-null    int64  
+ 1   ID              212 non-null    int64  
+ 2   Country         212 non-null    object 
+ 3   Continent       212 non-null    object 
+ 4   Population      212 non-null    float64
+ 5   IMF_GDP         212 non-null    float64
+ 6   UN_GDP          212 non-null    float64
+ 7   GDP_per_capita  212 non-null    float64
+dtypes: float64(4), int64(2), object(2)
+
+Workflow type: default
+
+Workflow generation:
+"drops the columns 'id' from the dataframe.",
+'creates a heatmap of the correlation between different variables in the dataframe, using the seaborn and matplotlib libraries.',
+"uses the onehotencoder from sklearn to encode the categorical variable 'continent' in the dataframe.",
+'uses the standardscaler from sklearn to scale the numerical data in the dataframe.',
+'splits the data using the train_test_split function from the sklearn.model_selection library.',
+'fits a linear regression model to the data and predicts the values for target value.',
+'calculates the root mean squared error (rmse)  using the mean_squared_error function from the sklearn.metrics library.',
+'fits a decision tree regressor model to the given data and predicts the output.',
+'calculates the root mean squared error (rmse) using the mean_squared_error function.'

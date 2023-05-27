@@ -1,0 +1,20 @@
+Add the data-related information into the data processing or data visualization cases to generate the correct code. 
+Do not add anything in the case prompt does not relate to data processing.
+
+Add "@metadata" if the prompt relates to data types.
+Prompt: 'uses labelencoder to encode all the categorical variables in the dataframe'
+Added: 'uses labelencoder to encode all the categorical variables in the dataframe.@metadata'
+Prompt: 'uses the standardscaler from sklearn to scale the numerical data in the dataframe'
+Added: 'uses the standardscaler from sklearn to scale the numerical data in the dataframe.@metadata'
+Prompt: 'creates a countplot to visualize the distribution of a given categorical variable.'
+Added: 'creates a countplot to visualize the distribution of a given categorical variable.@metadata'
+Prompt: 'creates a figure with 6 subplots to visualize the frequency of numerical columns in the data.'
+Added: 'creates a figure with 6 subplots to visualize the frequency of numerical columns in the data.@metadata'
+
+Add "@data-values/list_of_column_names" if the prompt relates to data values of one or some columns. list_of_column_names = list of some column names with comma separated.
+Prompt: "splits the 'personal_status' column into two new columns, 'gender' and 'marital_status'"
+Added: "splits the 'personal_status' column into two new columns, 'gender' and 'marital_status'.@data-values/personal_status"
+Prompt: "converts the date column in the dataset to datetime format, and stores the start and end dates of the dataset."
+Added: "converts the date column in the dataset to datetime format, and stores the start and end dates of the dataset.@data-values/date"
+Prompt: "converts the 'born' column to a datetime format"
+Added: "converts the 'born' column to a datetime format.@data-values/born"

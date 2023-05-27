@@ -1,0 +1,96 @@
+Extract keyphrases and their categories from following prompts given problem description, dataset file and dataset metadata.
+
+Problem description:
+Cars.com is now the second-largest automotive classified site with a large collection of vehicles for sale. However, the website can be prolonged, and in an attempt to collect many Honda vehicles to help me choose between economical cars I build a web scraper to collect up to 5,000 Honda vehicles.\n**Content**\nThis dataset will be scraped every few months and contains relevant information cars.com provides such as:\n- The car's model\n- Condition\n- Price\n- Ratings\n- Drivetrain\n- Transmission\nSee \n
+
+Dataset file: honda_sell_data.csv
+
+Dataset metadata:
+df = pd.read_csv('honda_sell_data.csv')
+df.info()
+Data columns (total 25 columns):
+ #   Column                   Non-Null Count  Dtype  
+---  ------                   --------------  -----  
+ 0   Year                     4999 non-null   int64  
+ 1   Make                     4999 non-null   object 
+ 2   Model                    4999 non-null   object 
+ 3   Condition                4999 non-null   object 
+ 4   Price                    4999 non-null   object 
+ 5   Consumer_Rating          4999 non-null   float64
+ 6   Consumer_Review_#        4999 non-null   int64  
+ 7   Exterior_Color           4988 non-null   object 
+ 8   Interior_Color           4988 non-null   object 
+ 9   Drivetrain               4988 non-null   object 
+ 10  MPG                      3514 non-null   object 
+ 11  Fuel_Type                4988 non-null   object 
+ 12  Transmission             4988 non-null   object 
+ 13  Engine                   4988 non-null   object 
+ 14  VIN                      4988 non-null   object 
+ 15  Stock_#                  4988 non-null   object 
+ 16  Mileage                  4988 non-null   object 
+ 17  Comfort_Rating           4447 non-null   float64
+ 18  Interior_Design_Rating   4447 non-null   float64
+ 19  Performance_Rating       4447 non-null   float64
+ 20  Value_For_Money_Rating   4447 non-null   float64
+ 21  Exterior_Styling_Rating  4447 non-null   float64
+ 22  Reliability_Rating       4447 non-null   float64
+ 23  State                    4926 non-null   object 
+ 24  Seller_Type              4926 non-null   object 
+dtypes: float64(7), int64(2), object(16)
+
+Prompt: "imports the necessary libraries for plotting and sets the style to 'ggplot'."
+Keyphrases: 'import the necessary libraries': import library, 'plotting': library type
+
+Prompt: 'reads in the csv file "honda_sell_data.csv" and displays the first five rows of the data.'
+Keyphrases: 'read csv file': read dataset, '"honda_sell_data.csv"': dataset file, 'display': view data, 'first five rows': view data target
+
+Prompt: 'formats the mpg column by taking the median of the interval and mapping it to the column.'
+Keyphrases: 'format the column': transform data, 'mpg column': data features
+
+Prompt: 'fill the missing mpg values with the mean of the existing mpg values.'
+Keyphrases: 'fill the missing': transform data, 'mpg': data features, 'mean': transform data target
+
+Prompt: 'fills the missing values in the dataframe with the mean of the existing values for each column.'
+Keyphrases: 'fill the missing': transform data, 'mean': transform data target
+
+Prompt: 'fill missing values in the seller_type column with "dealer".'
+Keyphrases: 'fill missing': transform data, 'seller_type': data features, '"dealer"': object value
+
+Prompt: "filling missing values in the 'state' column with the most frequent value, 'ca'."
+Keyphrases: 'fill missing': transform data, "'state' column": data features, 'the most frequent value': transform data target, "'ca'": object value
+
+Prompt: 'fixing the data type and format of the mileage column, dropping rows with missing values in certain columns, and filling missing values with 0.'
+Keyphrases: 'fixing': transform data, 'data type': transform data target, 'format': transform data target, 'mileage column': data feature, "dropping": transform data, "missing values": transform data target, 'filling missing values': transform data, '0': numeric value
+
+Prompt: 'calculates the overall rating of the top 10 cars based on the average of the ratings for interior design, comfort, value for money, exterior styling, reliability, performance, and consumer rating.'
+Keyphrases: 'calculates': view data, 'top 10 cars': view data target, 'interior design': data features, 'comfort': data features, 'value for money': data features, 'exterior styling': data features, 'reliability': data features, 'performance': data features, 'consumer rating': data features
+
+Prompt: 'check the correlation between price and comfort rating is the highest among all the ratings, as seen from the heatmap and scatterplot.'
+Keyphrases: 'check the correlation': visualize data, 'price': data features, 'comfort rating': data features, 'heatmap': visualization graph, 'scatterplot': visualization graph
+
+Prompt: 'creates a histogram of the price column in the dataframe, with a kernel density estimation (kde) line.'
+Keyphrases: 'creates a histogram': visualize data, 'histogram': visualization graph, 'price column': data features, 'kernel density estimation': visualization graph, 'kde': visualization graph
+
+Prompt: 'creates a countplot to visualize the most used fuel type of car.'
+Keyphrases: 'create a countplot': visualize data, 'countplot': visualization graph, 'most used': visualize data target, 'fuel type of car': data features
+
+Prompt: 'creates a scatterplot to visualize the relationship between price and mpg, with the points colored by fuel type.'
+Keyphrases: 'create a scatterplot': visualize data, 'scatterplot': visualization graph, 'relationship': visualize data target, 'price': data features, 'mpg': data features, 'colored': visualization parameters, 'fuel type': data features
+
+Prompt: 'encodes the categorical data into numerical values so that it can be used for prediction.'
+Keyphrases: 'encodes': transform data, 'categorical': transform data target, 'numerical': transform data target
+
+Prompt: 'uses rfe and random forest regressor to select the optimal number of features for a given dataset, and then plots the results in a boxplot.'
+Keyphrases: 'rfe': model, 'random forest regressor': model, 'plots the results': visualize training results, 'boxplot': visualization graph
+
+Prompt: 'creates a parameter grid for xgboost, containing parameters such as min_child_weight, gamma, subsample, colsample_bytree, and max_depth.'
+Keyphrases: 'parameter grid': model parameters, 'xgboost': model, 'min_child_weight': model parameters, 'gamma': model parameters, 'subsample': model parameters, 'colsample_bytree': model parameters, 'max_depth': model parameters
+
+Prompt: 'uses xgboost and scikitlearn to perform a randomizedsearchcv on a dataset to find the best parameters for a xgbregressor model.'
+Keyphrases: 'xgboost': model, 'randomizedsearchcv': hyper-parameters tuning, 'xgbregressor': model
+
+Prompt: 'creates an xgbregressor model is configured with an objective of "reg:squarederror", a random state of 42, a subsample of 1, a min_child_weight of 5, a max_depth of 5, a gamma of 5, and a colsample_bytree of 0.6.'
+Keyphrases: 'xgbregressor': model, 'random state': model parameters, '42': numeric value, 'subsample': model parameters, '1': numeric value, 'min_child_weight': model parameters, '5': numeric value, 'max_depth': model parameters, 'gamma': model parameters, 'colsample_bytree': model parameters, '0.6': numeric value
+
+Prompt: 'uses 5fold cross validation to evaluate the performance of an xgboost model using r2 as the scoring metric.'
+Keyphrases: '5fold cross validation': validate model, 'xgboost': model, 'r2': metric

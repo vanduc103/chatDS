@@ -9,11 +9,20 @@ def prompt_list_len(prompt_list):
             promptlist_len += 1
     return promptlist_len
 
-def read_code(prompt_list, cell_idx):
+def read_codev1(prompt_list, cell_idx):
     code = ""
     promptlist_len = prompt_list_len(prompt_list)
     for i in range(min(promptlist_len, cell_idx+1)):
         code += prompt_list[i]['generated_code']
+    return code
+
+def read_code(prompt_list, cell_idx):
+    code = ""
+    promptlist_len = prompt_list_len(prompt_list)
+    # get the latest code idx
+    code_idx = promptlist_len-1
+    if code_idx >= 0:
+        code += prompt_list[code_idx]['generated_code']
     return code
 
 def write_code(nb_file, prompt_list, cell_idx):
@@ -53,9 +62,9 @@ def write_code(nb_file, prompt_list, cell_idx):
         json.dump(nb_code, f)
     
 import openai
-def response(openai_key, prefix, codex_name="text-davinci-003", 
-                         max_tokens=1024,
-                         temperature=0.0,
+def responsev1(openai_key, prefix, codex_name="text-davinci-003", 
+                         max_tokens=2048,
+                         temperature=0.2,
                          top_p=1.0):
 
     #key = "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"
@@ -80,11 +89,38 @@ def response(openai_key, prefix, codex_name="text-davinci-003",
             return 'Please check the Error!!!'
     return response['choices'][0]['text']
     
+    
+def response(openai_key, prefix, codex_name="gpt-3.5-turbo", 
+                         max_tokens=2048,
+                         temperature=0.2,
+                         top_p=1.0):
+
+    #key = "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"
+    key = openai_key
+    try:
+        response = openai.ChatCompletion.create(
+                        model=codex_name,
+                        messages=[{'role': 'user', 'content': prefix}],
+                        temperature=temperature,
+                        max_tokens=max_tokens,
+                        api_key=key,
+                        top_p=top_p,
+                        frequency_penalty=0,
+                        presence_penalty=0,
+                        stop=["</code>"],
+                    )
+    except (openai.error.RateLimitError, openai.error.APIConnectionError) as e:
+            print(type(e), e)
+            return 'Please check the Error!!!'
+    return response['choices'][0]['message']['content']
+    
 def update_prompt(prompt_list, cell_idx, instruction, problem, ans, prompt, 
                       generated_code, pre_prompt_idx=None, prompt_source='', data_source=''):
 
     # add to prompt list
-    prompt_list[cell_idx] = {
+    promptlist_len = prompt_list_len(prompt_list)
+    code_idx = min(promptlist_len, cell_idx)
+    prompt_list[code_idx] = {
                             'instruction': instruction,
                             'problem': problem,
                             'ans': ans,

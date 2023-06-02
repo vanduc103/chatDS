@@ -15,7 +15,7 @@ import json
 
 from database import Database
 from config import upload_folder, allowed_extensions, open_api_mode, jupyter_url, openai_key
-from utils import read_code, response, update_prompt, update_prompt_code, write_code
+from utils import read_code, response, update_prompt, update_prompt_code, write_code, prompt_list_len
 
 from argparse import ArgumentParser
 
@@ -36,6 +36,9 @@ The dataset information is in the "Dataset Information" part.
 The data values information is in the "Data Values" part.
 Please follow carefully each sentence in the prompt after the "Q:".
 '''
+instruction = '''You are the python code generation for a data science problem.
+Please always generate the full training code given the previous code and the prompt.
+'''
 
 problem = '''Problem Description:
 '''
@@ -55,30 +58,39 @@ A:
 data_file = ''
 nb_file = ''
 
-initial_templates = [
+'''initial_templates = [
     'Imports various libraries and modules to perform data preprocessing, data analysis and data visualization.@problem',
     'Reading the dataset in {} file into a DataFrame and Show first 5 rows.',
     'Show dataset information.',
     'Check null values.',
-]
+]'''
+initial_templates = []
 
 def prompt_preprocessing(prompt):
-    global dataset_metadata
-    global data_values
+    dataset_metadata = '\nDataset Information:\n'
+    data_values = '\nData Values:\n'
+    global data_file
     
     prompt_support = ''
     if "@problem" in prompt:
         prompt = prompt.replace("@problem", "").strip()
         prompt_support += problem
+        
+    if "@datafile" in prompt:
+        prompt = prompt.replace("@datafile", "").strip()
+        prompt_support += 'Data file name is {}.\n'.format(data_file)
+        
     if "@metadata" in prompt:
         prompt = prompt.replace("@metadata", "").strip()
         dataset_metadata += get_dataset_metadata(data_file)
-        prompt_support += dataset_metadata
+        prompt_support += dataset_metadata + '------------\n'
+        
     if "@data-values" in prompt:
         instr = prompt[prompt.index("@data-values"):]
         prompt = prompt.replace(instr, "").strip()
         col_name = instr.split("/")[1]
         col_names = [col for col in col_name.split(",")]
+        col_names = [col.replace('\'', "").replace('\"', "") for col in col_names]
         data_values += get_dataset_values(data_file, col_names)
         prompt_support += data_values
         
@@ -94,7 +106,9 @@ def get_dataset_metadata(data_file):
 
 def get_dataset_values(data_file, col_name):
     df = pd.read_csv(data_file)
-    values = df[col_name].value_counts()
+    values = df[col_name].to_numpy()
+    # get random 10 elements
+    values = values[np.random.choice(values.shape[0], 10, replace=False), :]
     return str(values)
 
 def allowed_file(filename):
@@ -253,26 +267,31 @@ class UserFeedbackAPI(Resource):
         if len(prompt_content) == 0:
             return [{"id": prompt_id, "prompt": prompt_content, "code": ""}]
         
-        promptlist_len = 0
         global prompt_list
         global nb_file
-        for i in range(len(prompt_list)):
-            if prompt_list[i] is not None:
-                promptlist_len += 1
-        print('promptlist:', promptlist_len)
         
         res = []
-        code = read_code(prompt_list, prompt_id-1)
-        prompt_content = "Q:" + prompt_content
+        #code = read_code(prompt_list, prompt_id-1)
+        promptlist_len = prompt_list_len(prompt_list)
+        code = read_code(prompt_list, max(0, promptlist_len-1))
+        code += '\n----------\n'
+        #prompt_content = "Q:" + prompt_content
+        # add datafile and data metadata to prompt content (in the first time)
+        if promptlist_len == 0:
+            prompt_content += "@datafile.@metadata"
+        # get data file and data metadata information
         prompt_content, prompt_support = prompt_preprocessing(prompt_content)
-        prompt = instruction + prompt_support + prompt_content + ans + code
+        # create prompt to chatgpt
+        #prompt = instruction + prompt_support + prompt_content + ans + code
+        prompt =  prompt_support + '\n' + code + instruction + prompt_content + ans
         print(prompt)
+        # call openai api
         if open_api_mode:
             out = response(openai_key, prompt)
         else:
             out = "print('test code of prompt {}')".format(prompt_id)
         print('>>', out)
-        res.append({"id": prompt_id, "prompt": prompt_content, "code": code})
+        res.append({"id": prompt_id, "prompt": prompt_content, "code": out})
         # update prompt list
         update_prompt(prompt_list, prompt_id, instruction, problem, ans, prompt_content, out)
         # write code

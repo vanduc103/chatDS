@@ -15,7 +15,7 @@ import json
 
 from database import Database
 from config import upload_folder, allowed_extensions, open_api_mode, jupyter_url, openai_key
-from utils import read_code, response, update_prompt, update_prompt_code, write_code, prompt_list_len
+from utils import read_code, response, update_prompt, update_prompt_code, prompt_list_len
 
 from argparse import ArgumentParser
 
@@ -29,26 +29,9 @@ api = Api(app)
     
 prompt_list = [None] * 100
 
-instruction = '''Instruction: You are the code generation assistant for a data science problem. 
-Code is in Python. Please import all required libraries.
-The data science problem is in the "Problem Description" part.
-The dataset information is in the "Dataset Information" part.
-The data values information is in the "Data Values" part.
-Please follow carefully each sentence in the prompt after the "Q:".
-'''
 instruction = '''You are the python code generation for a data science problem.
 Please always generate the full training code given the previous code and the prompt.
 '''
-
-problem = '''Problem Description:
-'''
-
-dataset_metadata = '''Dataset Information:
-'''
-data_values = '''Data Values:
-'''
-
-prompt_content = ''
 
 ans = '''
 A:
@@ -56,14 +39,7 @@ A:
 '''
 
 data_file = ''
-nb_file = ''
 
-'''initial_templates = [
-    'Imports various libraries and modules to perform data preprocessing, data analysis and data visualization.@problem',
-    'Reading the dataset in {} file into a DataFrame and Show first 5 rows.',
-    'Show dataset information.',
-    'Check null values.',
-]'''
 initial_templates = []
 
 def prompt_preprocessing(prompt):
@@ -78,12 +54,12 @@ def prompt_preprocessing(prompt):
         
     if "@datafile" in prompt:
         prompt = prompt.replace("@datafile", "").strip()
-        prompt_support += 'Data file name is {}.\n'.format(data_file)
+        prompt_support += 'Data file name: {}.\n'.format(data_file)
         
     if "@metadata" in prompt:
         prompt = prompt.replace("@metadata", "").strip()
         dataset_metadata += get_dataset_metadata(data_file)
-        prompt_support += dataset_metadata + '------------\n'
+        prompt_support += dataset_metadata + '\n------------\n'
         
     if "@data-values" in prompt:
         instr = prompt[prompt.index("@data-values"):]
@@ -148,9 +124,7 @@ class ProgramInitAPI(Resource):
         """
         args = self.reqparse.parse_args()
         global email
-        global problem
         global data_file
-        global nb_file
         
         email = args['email']
         #openai_key = args['openai_key']
@@ -159,8 +133,8 @@ class ProgramInitAPI(Resource):
         print(data_file)
         # get file name
         file_name = os.path.splitext(os.path.basename(data_file))[0]
-        nb_file = os.path.join(os.path.dirname(data_file), file_name + '.ipynb')
-        print(nb_file)
+        #nb_file = os.path.join(os.path.dirname(data_file), file_name + '.ipynb')
+        #print(nb_file)
         
         # create a new folder for a user
         user_folder = email.split('@')[0]
@@ -178,28 +152,6 @@ class PromptInitAPI(Resource):
         """
         args = self.reqparse.parse_args()
         res = []
-        global prompt_list
-        global nb_file
-        for idx in range(len(initial_templates)):
-            template = initial_templates[idx]
-            code = read_code(prompt_list, idx-1)
-            prompt_content = 'Q:' + template.format(data_file)
-            prompt_content, prompt_support = prompt_preprocessing(prompt_content)
-            prompt = instruction + prompt_support + prompt_content + ans + code
-            print(prompt)
-            
-            if open_api_mode:
-                out = response(openai_key, prompt)
-            else:
-                out = "print('test code " + str(idx) + "')"
-            print('>>', out)
-            res.append({"prompt_id": idx, "prompt": prompt_content.replace("Q:",""),
-                   "code": out})
-            # update prompt list
-            update_prompt(prompt_list, idx, instruction, problem, ans, prompt_content, out)
-            # write code
-            #write_code(nb_file, prompt_list, idx)
-            
         return res
 
 class CodeGenerationAPI(Resource):
@@ -221,13 +173,7 @@ class CodeGenerationAPI(Resource):
         if len(prompt_content) == 0:
             return [{"code": ""}]
         
-        promptlist_len = 0
         global prompt_list
-        global nb_file
-        for i in range(len(prompt_list)):
-            if prompt_list[i] is not None:
-                promptlist_len += 1
-        print('promptlist:', promptlist_len)
         
         res = []
         code = read_code(prompt_list, prompt_id-1)
@@ -268,29 +214,30 @@ class UserFeedbackAPI(Resource):
             return [{"id": prompt_id, "prompt": prompt_content, "code": ""}]
         
         global prompt_list
-        global nb_file
         
         res = []
-        #code = read_code(prompt_list, prompt_id-1)
         promptlist_len = prompt_list_len(prompt_list)
         code = read_code(prompt_list, max(0, promptlist_len-1))
         code += '\n----------\n'
-        #prompt_content = "Q:" + prompt_content
-        # add datafile and data metadata to prompt content (in the first time)
+        
+        # add datafile and data metadata to prompt content (at the first time)
         if promptlist_len == 0:
             prompt_content += "@datafile.@metadata"
         # get data file and data metadata information
         prompt_content, prompt_support = prompt_preprocessing(prompt_content)
-        # create prompt to chatgpt
-        #prompt = instruction + prompt_support + prompt_content + ans + code
+        
+        # create prompt for chatgpt
         prompt =  prompt_support + '\n' + code + instruction + prompt_content + ans
         print(prompt)
+        
         # call openai api
         if open_api_mode:
             out = response(openai_key, prompt)
         else:
             out = "print('test code of prompt {}')".format(prompt_id)
         print('>>', out)
+        
+        # return result
         res.append({"id": prompt_id, "prompt": prompt_content, "code": out})
         # update prompt list
         update_prompt(prompt_list, prompt_id, instruction, problem, ans, prompt_content, out)
@@ -316,11 +263,10 @@ class PromptUpdateAPI(Resource):
         print(data)
         prompt_id = int(data['prompt_id'])
         prompt_code = data['code']
-        email = data.get('email', '')
+        #email = data.get('email', '')
         print(prompt_code)
         
         global prompt_list
-        global nb_file
         # update prompt list
         update_prompt_code(prompt_list, prompt_id, prompt_code)
         # write code

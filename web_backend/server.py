@@ -104,10 +104,13 @@ def exec_code(code):
 
     f = StringIO()
     with redirect_stdout(f):
-        exec(code)
+        try:
+            exec(code)
+        except:
+            out_value = f.getvalue()
 
     out_value = f.getvalue()
-    print(out_value)
+    #print(out_value)
     return out_value
 
 
@@ -239,17 +242,19 @@ class UserFeedbackAPI(Resource):
         
         res = []
         promptlist_len = prompt_list_len(prompt_list)
-        code = read_code(prompt_list, max(0, promptlist_len-1))
+        code, output = read_code(prompt_list, max(0, promptlist_len-1))
         code += '\n----------\n'
+        output += '\n----------\n'
         
         # add datafile and data metadata to prompt content (at the first time)
         if promptlist_len == 0:
-            prompt_content += "@datafile.@metadata"
+            #prompt_content += "@datafile.@metadata"
+            prompt_content += "@datafile"
         # get data file and data metadata information
         prompt_content, prompt_support = prompt_preprocessing(prompt_content)
         
         # create prompt for chatgpt
-        prompt =  prompt_support + '\n' + code + instruction + prompt_content + ans
+        prompt =  prompt_support + '\n' + code + '\n' + output + prompt_content + ans
         print(prompt)
         
         # call openai api
@@ -264,8 +269,10 @@ class UserFeedbackAPI(Resource):
         
         # return result
         res.append({"id": prompt_id, "prompt": prompt_content, "code": out})
+        
         # update prompt list
-        update_prompt(prompt_list, prompt_id, instruction, problem, ans, prompt_content, out)
+        update_prompt(prompt_list, prompt_id, instruction, problem, ans, prompt_content, out, out_value)
+        
         # write code
         #write_code(nb_file, prompt_list, prompt_id)
         

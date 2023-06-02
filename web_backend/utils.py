@@ -18,12 +18,14 @@ def read_codev1(prompt_list, cell_idx):
 
 def read_code(prompt_list, cell_idx):
     code = ""
+    output = ""
     promptlist_len = prompt_list_len(prompt_list)
     # get the latest code idx
     code_idx = promptlist_len-1
     if code_idx >= 0:
         code += prompt_list[code_idx]['generated_code']
-    return code
+        output += prompt_list[code_idx]['output']
+    return code, output
 
 def write_code(nb_file, prompt_list, cell_idx):
     # create a nb_file if not existed
@@ -115,6 +117,21 @@ def response(openai_key, prefix, codex_name="gpt-3.5-turbo",
     return response['choices'][0]['message']['content']
     
 def update_prompt(prompt_list, cell_idx, instruction, problem, ans, prompt, 
+                      generated_code, code_output):
+
+    # add to prompt list
+    promptlist_len = prompt_list_len(prompt_list)
+    code_idx = min(promptlist_len, cell_idx)
+    prompt_list[code_idx] = {
+                            'instruction': instruction,
+                            'problem': problem,
+                            'ans': ans,
+                            'prompt': prompt,
+                            'generated_code': generated_code,
+                            'output': code_output,
+                            }
+
+def update_promptv1(prompt_list, cell_idx, instruction, problem, ans, prompt, 
                       generated_code, pre_prompt_idx=None, prompt_source='', data_source=''):
 
     # add to prompt list

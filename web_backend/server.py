@@ -33,6 +33,9 @@ instruction = '''You are the python code generation for a data science problem.
 Please always generate the full training code given the previous code and the prompt.
 '''
 
+problem = '''Problem Description:
+'''
+
 ans = '''
 A:
 <code>
@@ -90,6 +93,24 @@ def get_dataset_values(data_file, col_name):
 def allowed_file(filename):
     return not allowed_extensions or ('.' in filename and filename.rsplit('.', 1)[1].lower() in allowed_extensions)
 
+def exec_code(code):
+    import warnings
+    warnings.filterwarnings("ignore")
+    import sys
+    from io import StringIO
+    from contextlib import redirect_stdout
+    
+    code = '''{}'''.format(code)
+
+    f = StringIO()
+    with redirect_stdout(f):
+        exec(code)
+
+    out_value = f.getvalue()
+    print(out_value)
+    return out_value
+
+
 @app.route('/api/v1/upload_file', methods=['POST'])
 #@cross_origin()
 #@auth.login_required
@@ -125,6 +146,7 @@ class ProgramInitAPI(Resource):
         args = self.reqparse.parse_args()
         global email
         global data_file
+        global problem
         
         email = args['email']
         #openai_key = args['openai_key']
@@ -236,6 +258,9 @@ class UserFeedbackAPI(Resource):
         else:
             out = "print('test code of prompt {}')".format(prompt_id)
         print('>>', out)
+        
+        # execute code
+        out_value = exec_code(out)
         
         # return result
         res.append({"id": prompt_id, "prompt": prompt_content, "code": out})

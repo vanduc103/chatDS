@@ -27,6 +27,49 @@ def read_code(prompt_list, cell_idx):
         output += prompt_list[code_idx]['output']
     return code, output
 
+def print_str(output):
+    import warnings
+    warnings.filterwarnings("ignore")
+    import sys
+    from io import StringIO
+    from contextlib import redirect_stdout
+    
+    code = '''print("".join({}))'''.format(output)
+    f = StringIO()
+    with redirect_stdout(f):
+        exec(code)
+        out_value = f.getvalue()
+    
+    return out_value
+
+def read_output_from_nb(nb_file, prompt_list, cell_idx):
+    code = ""
+    output = ""
+    promptlist_len = prompt_list_len(prompt_list)
+    
+    # create a nb_file if not existed
+    if not os.path.isfile(nb_file):
+        notebook = nbf.v4.new_notebook()
+        nbf.write(notebook, nb_file)
+    
+    nb_code = json.load(open(nb_file))
+    if cell_idx >= 0 and len(nb_code['cells']) > (2*cell_idx + 1):
+        code_cell = nb_code['cells'][2*cell_idx + 1]
+        if code_cell['cell_type'] == 'code':
+            code = code_cell['source']
+            code = print_str(code)
+            for out in code_cell['outputs']:
+                if out.get('name') == 'stdout' and out.get('output_type') == 'stream':
+                    output = out['text']
+                    output = print_str(output)
+                    break
+            # update output to promptlist
+            prompt_list[cell_idx]['output'] = output
+            if len(code) > 0:
+                # if code changed => update to promptlist
+                prompt_list[cell_idx]['generated_code'] = code
+    return str(output)
+
 def write_code(nb_file, prompt_list, cell_idx):
     # create a nb_file if not existed
     if not os.path.isfile(nb_file):
@@ -58,14 +101,17 @@ def write_code(nb_file, prompt_list, cell_idx):
             nb_code['cells'].append(prompt_cell)
             nb_code['cells'].append(code_cell)
     # write the prompt and code to cell
+    nb_code['cells'][2*cell_idx]['cell_type'] = 'markdown'
     nb_code['cells'][2*cell_idx]['source'] = prompt_list[cell_idx]['prompt']
+    
+    nb_code['cells'][2*cell_idx+1]['cell_type'] = 'code'
     nb_code['cells'][2*cell_idx+1]['source'] = prompt_list[cell_idx]['generated_code']
     with open(nb_file, 'w', encoding='UTF-8') as f:
         json.dump(nb_code, f)
     
 import openai
 def responsev1(openai_key, prefix, codex_name="text-davinci-003", 
-                         max_tokens=2048,
+                         max_tokens=1024,
                          temperature=0.2,
                          top_p=1.0):
 
@@ -92,15 +138,17 @@ def responsev1(openai_key, prefix, codex_name="text-davinci-003",
     return response['choices'][0]['text']
     
     
-def response(openai_key, prefix, codex_name="gpt-3.5-turbo", 
-                         max_tokens=2048,
+def response(openai_key, prefix, codex_name="gpt-3.5-turbo-0613", 
+                         max_tokens=1024,
                          temperature=0.2,
                          top_p=1.0):
 
     #key = "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"
     key = openai_key
     try:
-        response = openai.ChatCompletion.create(
+        # Create a new instance of the ChatCompletion API
+        openai_chat = openai.ChatCompletion()
+        response = openai_chat.create(
                         model=codex_name,
                         messages=[{'role': 'user', 'content': prefix}],
                         temperature=temperature,

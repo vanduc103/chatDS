@@ -1,0 +1,192 @@
+dataset_ref,ref,title,author,lastRunTime,language,kernelType,totalVotes
+ppb00x/country-gdp,ppb00x/gdp-per-capita,GDP_per_capita,srihari p,2023-04-07 08:18:55,,,10
+ppb00x/country-gdp,aleksapet98/gdp-eda-continents-economic-alliances,"GDP EDA, Continents, Economic Alliances ",Akipet98,2023-04-14 11:52:14,,,7
+gianinamariapetrascu/gender-pay-gap-europe-2010-2021,gianinamariapetrascu/clustering-european-countries-gender-pay-gap,💰 Clustering European Countries - Gender Pay Gap ,Gianina-Maria Petrașcu,2023-03-28 18:16:42,,,27
+gianinamariapetrascu/gender-pay-gap-europe-2010-2021,gianinamariapetrascu/spatial-regression-gender-inequality-index,🌍 Spatial regression - Gender Inequality Index,Gianina-Maria Petrașcu,2023-03-28 06:56:42,,,16
+kapturovalexander/nvidia-amd-intel-asus-msi-share-prices,arnabchaki/nvidia-stock-price-prediction-0-99-r2-score,NVIDIA Stock Price Prediction - 0.99 R2 Score,randomarnab,2023-04-25 06:53:37,,,18
+erdemtaha/cancer-data,guhbrandao/cancer-classification-97-accuracy,Cancer Classification 🦠 (97% Accuracy) ,GuhBrandao,2023-04-13 16:06:57,,,25
+erdemtaha/cancer-data,vijay20213/cancer-prediction-with-98-accuracy,Cancer prediction with 98% accuracy,Vijay Takbhate,2023-04-07 06:28:06,,,18
+ulrikthygepedersen/fastfood-nutrition,vijay20213/healthy-fast-foods-kmeans-and-visualization,Healthy fast foods (KMeans and visualization) ,Vijay Takbhate,2023-04-11 13:31:52,,,10
+ulrikthygepedersen/fastfood-nutrition,abrish2003/eda-on-fast-food-nutrition,EDA on Fast food Nutrition,S B ABRISH AADITYA,2023-04-09 18:51:42,,,6
+kreeshrajani/breast-cancer-survival-dataset,kreeshrajani/breast-cancer-survival-prediction-for-beginners,🎗️Breast Cancer Survival Prediction for Beginners,Kreesh Rajani,2023-03-24 09:24:57,,,11
+kreeshrajani/breast-cancer-survival-dataset,micaeld/breast-cancer-survival-pycaret,🎗️ Breast Cancer Survival - Pycaret 🎗️,Micaeld,2023-04-03 18:29:05,,,9
+omartorres25/honda-data,themeeemul/car-price-prediction-and-eda,Car_Price_Prediction and EDA,Uni Abihs,2023-04-25 01:38:35,,,9
+omartorres25/honda-data,takkimsncn/honda-car-datasets-analysis,Honda Car Datasets Analysis,takkimsncn,2023-04-15 10:26:21,,,1
+ulrikthygepedersen/meat-consumption,jesuisetudiant/meat-consumption-dataset-analysis,Meat_Consumption_Dataset_Analysis,Ali Naqvi,2023-03-28 16:15:22,,,6
+ulrikthygepedersen/meat-consumption,ulrikthygepedersen/meat-consumption-getting-started,Meat Consumption - Getting Started,Ulrik Thyge Pedersen,2023-03-09 10:22:03,,,2
+usamabuttar/world-happiness-report-2005-present,mudassarshaheen/happiness-eda-2005-2022,🌎 Happiness EDA 👌 ( 2005-2022),Mudassar Shaheen,2023-04-28 18:36:39,,,9
+usamabuttar/world-happiness-report-2005-present,hainescity/perceptions-of-corruption-2022-eda,Perceptions Of Corruption (2022) - EDA,Haines City,2023-03-30 17:30:04,,,8
+neuromusic/avocado-prices,nareshbhat/outlier-the-silent-killer,Outlier!!! The Silent Killer,Naresha Bhat,2021-08-30 07:18:27,,,823
+neuromusic/avocado-prices,janiobachmann/price-of-avocados-pattern-recognition-analysis,Price of Avocados || Pattern Recognition Analysis ,Janio Martinez Bachmann,2019-04-29 18:45:40,,,334
+rkiattisak/student-performance-in-mathematics,owaisbinmushtaq/student-performance-explained,Student_Performance_Explained,Owais Bin Mushtaq,2023-03-18 03:26:53,,,24
+rkiattisak/student-performance-in-mathematics,rkiattisak/starter-for-student-performance-prediction,Starter for student performance prediction,Kiattisak Rattanaporn,2023-03-14 18:31:41,,,13
+ppb00x/credit-risk-customers,subhranilmondal12/data-visualization-mlmodel-withcross-validation,Data Visualization + MLModel(withCross Validation),Subhranil Mondal12,2023-04-13 06:41:06,,,8
+ppb00x/credit-risk-customers,ppb00x/credit-risk-classification,credit risk classification,srihari p,2023-04-12 09:59:13,,,7
+arnabchaki/data-science-salaries-2023,arnabchaki/eda-on-data-science-salaries,EDA on Data Science Salaries 📊,randomarnab,2023-05-04 08:17:50,,,70
+arnabchaki/data-science-salaries-2023,majidkhadim/data-science-salaries-analysis,💥Data Science Salaries Analysis ,Majid Khadim,2023-04-25 23:15:27,,,18
+rkiattisak/salaly-prediction-for-beginer,ashokrajuyadav/salary-prediction,salary prediction,Ashok Raju Onteru,2023-03-07 09:38:48,,,10
+rkiattisak/salaly-prediction-for-beginer,slumericanbx/notebook892e236cc1,notebook892e236cc1,slumericanBx,2023-03-19 04:14:00,,,6
+lamiatabassum/top-50-us-tech-companies-2022-2023-dataset,rupeshmisar/usa-tech-company-analysis,USA Tech company analysis,Rupesh Misar,2023-04-03 10:04:40,,,6
+lamiatabassum/top-50-us-tech-companies-2022-2023-dataset,lamiatabassum/basic-eda-of-top-50-us-tech-companies,Basic EDA of Top 50 US Tech Companies,Lamia Tabassum,2023-03-25 06:29:57,,,6
+kapturovalexander/bitcoin-and-ethereum-prices-from-start-to-2023,mohanadashour/eth-prediction-for-one-day-with-rmse-of-149,ETH Prediction for one day with RMSE of 149,mohanad Ashour,2023-04-11 15:03:33,,,6
+kapturovalexander/bitcoin-and-ethereum-prices-from-start-to-2023,mohanadashour/btc-prediction-for-one-day-with-rmse-of-3985,BTC Prediction for one day with RMSE of 3985,mohanad Ashour,2023-04-10 13:43:36,,,3
+tanavbajaj/yahoo-finance-all-stocks-dataset-daily-update,tanavbajaj/amazon-stock-backtesting,Amazon stock Backtesting,Tanav Bajaj,2023-04-12 04:56:35,,,11
+tanavbajaj/yahoo-finance-all-stocks-dataset-daily-update,tanavbajaj/meta-stock-lstm-stock-prediction,META stock (LSTM Stock Prediction),Tanav Bajaj,2023-04-12 22:02:49,,,7
+ashishraut64/internet-users,ashishraut64/internet-users-eda,Internet Users EDA,ashishraut64,2023-03-29 13:50:33,,,13
+ashishraut64/internet-users,sanjay277/global-internet-users-a-geographical-analysis,Global Internet Users: A Geographical Analysis ,Sanjay,2023-05-03 21:11:54,,,4
+ashishraut64/global-methane-emissions,ashishraut64/visualization-example,Visualization Example,ashishraut64,2023-03-27 13:08:54,,,18
+ashishraut64/global-methane-emissions,oxyspike/global-emissions-eda,Global_Emissions_EDA,Mihir Kakadiya,2023-04-19 15:36:36,,,4
+khushiyadav2022/pandemic-details-of-world,khushiyadav2022/data-preprocessing-on-pandemic-details,Data preprocessing on pandemic details ,KHUSHI YADAV,2023-03-27 04:26:24,,,7
+khushiyadav2022/pandemic-details-of-world,alihasnainch/pendemic-situation,Pendemic Situation,Ali Hasnain,2023-04-10 18:28:25,,,3
+shub218/energy-data-1990-2020,user182827/some-simple-visualisations-of-the-energy-data,Some simple visualisations of the energy data ,User182827,2023-03-27 09:06:04,,,7
+shub218/energy-data-1990-2020,chrisroan/world-energy-data-1990-2020-eda-r,World Energy Data 1990-2020 EDA (R),Chris Roan,2023-03-28 19:48:51,,,5
+shedai/retail-data-set,shedai/sales-volume-seasonality,Sales Volume Seasonality,Sadi Evren SEKER,2023-03-30 20:28:55,,,11
+shedai/retail-data-set,shedai/customer-segmentation,Customer Segmentation,Sadi Evren SEKER,2023-03-30 21:47:52,,,11
+tayyarhussain/best-selling-game-consoles-of-all-time,sitrakamatthew/best-selling-gaming-consoles-analysis,Best-Selling Gaming Consoles Analysis,Sitraka_Forler,2023-04-17 13:23:55,,,7
+tayyarhussain/best-selling-game-consoles-of-all-time,snippp/best-selling-gaming-consoles-dataset,Best-Selling Gaming Consoles Dataset,Frank,2023-04-15 19:58:02,,,2
+shrutiambekar/smartphone-specifications-and-prices-in-india,shrutiambekar/data-cleaning-process-on-smartphone-dataset,Data Cleaning Process on Smartphone Dataset,shruti ambekar,2023-05-03 20:46:51,,,6
+shrutiambekar/smartphone-specifications-and-prices-in-india,sujaykapadnis/data-driven-insights-into-smartphone-features,Data-Driven Insights into Smartphone Features ,Sujay Kapadnis,2023-04-13 22:16:48,,,5
+adilbhatti/bitcoin-and-stock-exchanges,jacobsharples/bitcoin-s-rolling-correlation,Bitcoin's Rolling Correlation 📈,Jacob Sharples,2023-04-05 13:07:26,,,6
+adilbhatti/bitcoin-and-stock-exchanges,mohanadashour/btc-prediction-with-rmse-of-4147,BTC Prediction with RMSE of 4147,mohanad Ashour,2023-04-11 14:51:54,,,6
+mohamedafsal007/house-price-dataset-of-india,souravchanda01/house-price-dataset-of-india,House Price dataset of India,SOURAV CHANDA,2023-04-18 17:24:36,,,27
+mohamedafsal007/house-price-dataset-of-india,abrish2003/house-rent-eda-along-with-price-prediction,House rent EDA along with Price Prediction,S B ABRISH AADITYA,2023-04-19 21:01:46,,,12
+camnugent/california-housing-prices,shtrausslearning/bayesian-regression-house-price-prediction,Bayesian Regression | House Price Prediction,Andrey Shtrauss,2023-04-18 10:00:00,,,197
+camnugent/california-housing-prices,nkitgupta/advance-data-preprocessing,Advance Data Preprocessing,Ankit Gupta,2022-04-14 14:28:14,,,162
+lashagoch/life-expectancy-who-updated,akshatsharma0610/life-expectancy-analysis-of-india-eda,Life Expectancy Analysis of India (EDA),Akshat Sharma_0610,2023-04-10 08:32:13,,,5
+lashagoch/life-expectancy-who-updated,cg24hr/life-expectancy,Life Expectancy,DataDoc,2023-05-02 15:18:41,,,3
+julienjta/gun-statistics-around-the-world,sabirbagwan/gunstatisticseda,GunStatisticsEDA,Sabir Bagwan,2023-04-11 08:00:27,,,4
+julienjta/gun-statistics-around-the-world,ahmedmohamedabdallah/analysis-eda,Analysis & EDA,ahmed mohamed abdallah,2023-04-14 22:11:13,,,3
+debjeetdas/air-concentration-for-the-chernobyl-disaster,stpeteishii/radioactivity-change-after-the-chernobyl-disaster,Radioactivity Change after the Chernobyl Disaster ,stpete_ishii,2023-04-09 04:24:53,,,4
+debjeetdas/air-concentration-for-the-chernobyl-disaster,turbotobe/date-ingest-and-a-first-glance,Date ingest and a first glance,Tanh,2023-03-25 12:52:53,,,4
+nidzsharma/us-mass-shootings-19822023,eimadevyni/us-mass-shootings,us_mass_shootings,Eimantas Kulbe,2023-04-03 22:15:32,,,3
+nidzsharma/us-mass-shootings-19822023,stefansanchez26/basic-eda-and-interacting-map,Basic EDA and Interacting Map,stefan sanchez,2023-04-07 23:59:20,,,1
+ajaypalsinghlo/world-happiness-report-2023,lukestarnes/world-happiness-report-2023,World Happiness Report 2023,Luke Starnes,2023-04-17 14:21:56,,,8
+ajaypalsinghlo/world-happiness-report-2023,abhishek2220/world-happiness-report-2023-prediction,World Happiness Report 2023 Prediction ,Abhishek Kumar,2023-03-24 10:38:00,,,5
+rajkumarpandey02/list-of-unicorn-startup-companies,amalsalilan/unicorn-startup-companies, Unicorn Startup Companies,Amal Salilan,2023-04-08 16:13:36,,,3
+rajkumarpandey02/list-of-unicorn-startup-companies,anzarwani2/unicorn-startup-companies-analysis,Unicorn Startup Companies Analysis,Anzar,2023-04-04 06:13:07,,,3
+wawajahat/diabetes-dataset-by-age-standardized-countries,micaeld/eda-diabetes-r2-99-9,🩸 EDA - Diabetes - R2 99.9 🎯,Micaeld,2023-04-07 21:33:55,,,8
+wawajahat/diabetes-dataset-by-age-standardized-countries,wawajahat/diabetes-dataset-by-age-standardized,Diabetes Dataset By Age Standardized ,WA_Wajahat,2023-03-30 21:43:17,,,4
+uciml/pima-indians-diabetes-database,shrutimechlearn/step-by-step-diabetes-classification-knn-detailed,Step by Step Diabetes Classification-KNN-detailed,Shruti_Iyyer,2020-10-31 14:07:34,,,962
+uciml/pima-indians-diabetes-database,nareshbhat/outlier-the-silent-killer,Outlier!!! The Silent Killer,Naresha Bhat,2021-08-30 07:18:27,,,823
+sudhanshu2198/bangalore-restaurant-insights,stpeteishii/restaurant-rating-visualize-importance,Restaurant Rating Visualize Importance,stpete_ishii,2023-04-28 15:05:33,,,3
+sudhanshu2198/bangalore-restaurant-insights,sudhanshu2198/restaurant-rating-prediction-app,Restaurant Rating Prediction App,Sudhanshu Rastogi,2023-04-10 10:38:58,,,3
+priyanshuganwani09/entertainment-movies-tv-shows-database,aslibaraf/what-is-your-opinion,What is your opinion? 🤔 🤔 🤔 🤔,Himal,2023-04-06 08:47:19,,,16
+priyanshuganwani09/entertainment-movies-tv-shows-database,arvindkhoda/data-clustering,Data_Clustering,Arvind Khoda,2023-04-06 08:52:27,,,1
+rayhan32/english-premier-league-player-datset-2021-2023,sitrakamatthew/premier-league-eda-predicting-player-s-progress,Premier League EDA & Predicting player's progress,Sitraka_Forler,2023-04-02 20:55:47,,,10
+rayhan32/english-premier-league-player-datset-2021-2023,mangais/premiere-league-eda-2021-2022-season,Premiere League EDA 2021 - 2022 Season,Muhammad Faris,2023-04-27 12:12:34,,,1
+pavansubhasht/ibm-hr-analytics-attrition-dataset,nareshbhat/outlier-the-silent-killer,Outlier!!! The Silent Killer,Naresha Bhat,2021-08-30 07:18:27,,,823
+pavansubhasht/ibm-hr-analytics-attrition-dataset,janiobachmann/attrition-in-an-organization-why-workers-quit,Attrition in an Organization  || Why Workers Quit?,Janio Martinez Bachmann,2019-07-10 19:05:34,,,336
+konradb/civilian-harm-in-ukraine,stpeteishii/civilian-harm-in-ukraine,Civilian Harm in Ukraine,stpete_ishii,2023-03-31 16:12:43,,,8
+themrityunjaypathak/covid-cases-and-deaths-worldwide,rajattomar132/detailed-statistics-for-data-science,Detailed Statistics for Data Science,rajattomar132,2023-02-19 14:40:12,,,53
+themrityunjaypathak/covid-cases-and-deaths-worldwide,ilyai332/covid-cases-and-deaths-worldwide,🦠Covid Cases and Deaths WorldWide🦠,Ilya Yatsyshin,2023-03-20 02:42:03,,,40
+arnabchaki/laptop-price-prediction,arnabchaki/deep-feature-engineering,Deep Feature Engineering,randomarnab,2023-05-04 08:18:52,,,33
+arnabchaki/laptop-price-prediction,raphaelmarconato/laptop-price-eda-grouping-and-ml-81-80,"Laptop Price - EDA, Grouping and ML (81,80%)",Raphael Marconato,2023-04-07 17:48:27,,,11
+anas123siddiqui/mobiles,anas123siddiqui/mobiles-of-all-range,Mobiles of all range,Mohammad Anas,2023-02-18 16:58:21,,,6
+anas123siddiqui/mobiles,muthumanikandan24/mobiles-reviews,Mobiles_Reviews,Muthu Manikandan24,2023-03-02 18:29:14,,,3
+yapwh1208/countries-gdp-2012-to-2021,sitrakamatthew/gdp-analysis-over-the-years-2012-to-2021,GDP Analysis over the years 2012 to 2021,Sitraka_Forler,2023-04-11 21:50:04,,,8
+yapwh1208/countries-gdp-2012-to-2021,alyyymohamedd/countries-gdp-2012-to-2021a,Countries GDP 2012 to 2021A,Alyyymohamedd,2023-04-16 00:37:58,,,1
+niyarrbarman/symptom2disease,faizalkarim/pretrained-bert-98-8,🤗 Pretrained-Bert (98.8%),Faizal Karim,2023-04-06 04:11:20,,,14
+niyarrbarman/symptom2disease,alibidaran/symptom2disease-transformers,Symptom2disease_transformers,ali bidaran,2023-04-26 10:34:02,,,4
+rajkumarpandey02/lists-of-earthquakes-deadliest-and-largest,sabirbagwan/earthquakeseda,EarthquakesEDA,Sabir Bagwan,2023-04-12 12:20:02,,,1
+warcoder/earthquake-dataset,adambyrne/earthquake-alert-classifier,Earthquake Alert Classifier,Adam Byrne,2023-03-16 16:52:24,,,9
+warcoder/earthquake-dataset,nitinsantoshgholap/c-vwith-ensemble-technique-on-earthquick-dataset,C Vwith ensemble technique on Earthquick dataset ,Nitin Santosh Gholap,2023-03-01 17:35:41,,,6
+debjeetdas/babies-birth-weight,abdullahshahzad12345/pregnancydataanalysis,PregnancyDataAnalysis,Abdullah shahzad,2023-03-19 17:21:22,,,6
+debjeetdas/babies-birth-weight,stpeteishii/birth-weight-visualize-importance,Birth Weight Visualize Importance,stpete_ishii,2023-04-02 13:28:24,,,4
+leomartinelli/bullying-in-schools,anzarwani2/bullying-in-schools-eda,Bullying in Schools - EDA,Anzar,2023-03-13 05:10:06,,,10
+leomartinelli/bullying-in-schools,sridharstreaks/bullying-in-school-prediction,Bullying in School prediction,SRIDHAR STREAKS,2023-03-07 19:20:09,,,1
+themrityunjaypathak/heart-disease-and-stroke-prevention,sripadkarthik/heart-disease-prediction-using-ml-with-90-acc,heart_disease prediction using ML with 90% +acc ,sripad karthik,2023-03-21 06:57:44,,,8
+themrityunjaypathak/heart-disease-and-stroke-prevention,yeonseokcho/heart-disease-data,heart disease data,yscho,2023-04-09 06:29:42,,,4
+tariqbashir/world-university-ranking-2023,tariqbashir/global-univeristy-rankings,Global_Univeristy_Rankings,Tariq Mahmood,2023-03-27 18:52:06,,,5
+tariqbashir/world-university-ranking-2023,daliaacosta/einfuehrung-python-datensaetze-betrachten,"Einfuehrung Python, Datensaetze betrachten",Dalia Acosta,2023-04-11 07:27:17,,,0
+ritwikb3/heart-disease-statlog,ritwikb3/heart-disease-prediction-statlog,Heart Disease Prediction Statlog,Ritwik_B3,2023-04-02 06:50:11,,,7
+ritwikb3/heart-disease-statlog,alihasnainch/heart-disease-statlog-analysis,Heart Disease Statlog Analysis,Ali Hasnain,2023-04-10 19:40:08,,,2
+fedesoriano/stroke-prediction-dataset,bhuvanchennoju/data-storytelling-auc-focus-on-strokes,📣💡🎨 Data Storytelling 🎯AUC focus on🩸strokes ,Bhuvan Chennoju,2021-06-15 16:11:06,,,287
+fedesoriano/stroke-prediction-dataset,gaetanlopez/how-to-make-clean-visualizations,How to make clean visualizations ,Gaetan L.,2021-04-19 18:38:46,,,276
+amaanansari09/most-streamed-songs-all-time,amalsalilan/exploring-song-attributes-clustering-and-visualiz,Exploring Song Attributes: Clustering and Visualiz,Amal Salilan,2023-03-11 16:33:47,,,4
+amaanansari09/most-streamed-songs-all-time,sridharstreaks/hit-songs-prediction-and-eda,Hit Songs Prediction and EDA,SRIDHAR STREAKS,2023-03-09 09:43:32,,,3
+danbraswell/us-tornado-dataset-1950-2021,danbraswell/seventy-years-of-tornadic-activity-in-the-us,Seventy Years of Tornadic Activity in the US,Random Draw,2023-04-30 02:08:30,,,14
+danbraswell/us-tornado-dataset-1950-2021,evangower/diving-into-us-tornado-data,Diving into US Tornado Data,Evan Gower,2023-04-16 16:47:40,,,11
+sumanthvrao/daily-climate-time-series-data,odins0n/exploring-time-series-plots-beginners-guide,📈Exploring Time Series plots: Beginners Guide📈,Sanskar Hasija,2021-11-18 01:16:26,,,229
+sumanthvrao/daily-climate-time-series-data,bextuychiev/advanced-time-series-analysis-decomposition,"Advanced Time Series Analysis: Decomposition, ....",bexgboost,2023-02-21 17:26:43,,,98
+debjeetdas/nypd-shooting-incident-data,stpeteishii/ny-shooting-incidents,NY Shooting Incidents,stpete_ishii,2023-03-28 14:55:02,,,6
+henriupton/electricity-dayahead-prices-entsoe,henriupton/electricity-day-ahead-prices-quick-eda,Electricity Day Ahead Prices - Quick EDA,henriup,2023-04-08 23:50:14,,,3
+henriupton/electricity-dayahead-prices-entsoe,vigneshspericorn/lstm-france-electricity-data,LSTM - France Electricity Data,vigneshspericorn,2023-04-24 09:41:01,,,1
+rkiattisak/sports-car-prices-dataset,mirzahasnine/sports-car-pandas-profiling,Sports Car Pandas Profiling,Mirza_Hasnine,2023-03-12 14:33:31,,,16
+rkiattisak/sports-car-prices-dataset,rkiattisak/starter-for-sports-car-prices,Starter for Sports car prices ,Kiattisak Rattanaporn,2023-03-15 12:48:23,,,12
+rajkumarpandey02/economy-of-the-united-states,luisyances/economia-eeuu,Economia eeuu,luis yances,2023-03-30 01:29:13,,,2
+sankha1998/ipl2023,akshatsharma0610/ipl-2023-match-1-analysis,IPL 2023 match 1 Analysis,Akshat Sharma_0610,2023-04-11 19:07:10,,,3
+sankha1998/ipl2023,ishantgargml/ipl-2023-match1-analysis-with-challenges,IPL 2023 Match1 Analysis with challenges,Ishant Garg ML,2023-04-27 14:07:41,,,1
+dsfelix/jojo-stands-stats,kamran3210/what-jojos-stand-are-you,What JoJos Stand Are You,Kamran,2023-03-30 19:37:10,,,395
+dsfelix/jojo-stands-stats,dsfelix/analysing-jojo-stand-stats,Analysing JoJo Stand Stats,DSFelix,2022-07-21 01:37:38,,,12
+igorcoelho24/pokemon-all-generations,warcoder/finding-best-pokemon-team,Finding best Pokemon Team,Chirag Chauhan,2023-04-07 19:50:17,,,12
+rkiattisak/traveler-trip-data,rkiattisak/starter-for-traveler-trip-dataset,Starter for traveler trip dataset,Kiattisak Rattanaporn,2023-03-14 18:41:41,,,14
+rkiattisak/traveler-trip-data,slumericanbx/notebook892e236cc1,notebook892e236cc1,slumericanBx,2023-03-19 04:14:00,,,6
+sairamkilari/austin-airbnb-dataset,kishantongrao/airbnb-next-random-base-model,airbnb_next_random_base_model,Kishan Tongrao,2023-03-27 13:37:47,,,2
+sairamkilari/austin-airbnb-dataset,blue88128/iml-h3-junhuang-linear-regression,IML H3 junhuang Linear Regression,Jun Huang,2023-03-26 23:21:51,,,1
+iabdulw/nba-player-performance-stats,aleksapet98/nba-stats-eda-deep-dive,NBA Stats EDA Deep Dive,Akipet98,2023-04-02 18:22:17,,,8
+uciml/iris,benhamner/python-data-visualizations,Python Data Visualizations,Ben Hamner,2017-08-29 15:54:22,,,1507
+uciml/iris,ash316/ml-from-scratch-with-iris,ML from Scratch with IRIS!!,Ashwini Swain,2017-08-31 06:00:20,,,921
+iabdulw/ecommerce-customer-data,iabdulw/ecommerce-customer-data-vizualized,Ecommerce Customer Data Vizualized,Abdul Wahab,2023-03-14 23:39:36,,,9
+iabdulw/ecommerce-customer-data,ekaterinaneustroeva/bung-3,Übung 3,Ekaterina Neustroeva,2023-04-13 10:40:26,,,2
+adityamishraml/laptops,themeeemul/laptop-price-prediction,Laptop_Price_Prediction,Uni Abihs,2023-04-16 13:59:31,,,5
+yasserh/titanic-dataset,mozattt/automated-eda-tools-part-2,🔥 Automated EDA Tools (Part 2) 🖋️,Mozattt,2022-11-05 05:22:26,,,46
+yasserh/titanic-dataset,kahtan/titanic-visualization,titanic visualization,kahtan Naser,2022-11-10 14:39:24,,,16
+faisaljanjua0555/facebook-users-by-country-data-cleaned,autumnawrange/plotly-express-choropleth-map,Plotly Express Choropleth Map,Quackkle,2023-04-06 09:35:38,,,11
+faisaljanjua0555/facebook-users-by-country-data-cleaned,mudassarshaheen/fb-users-eda,FB Users EDA,Mudassar Shaheen,2023-04-06 05:55:59,,,10
+arnabchaki/medium-articles-dataset,vineetkumar1611/article-analysis,Article Analysis,vineetkumar1611,2023-04-03 12:55:12,,,9
+arnabchaki/medium-articles-dataset,aliphya/medium-article-analysis,Medium Article Analysis,Alifia Ghantiwala,2023-04-03 07:07:17,,,7
+arnabchaki/fitness-trackers-products-ecommerce,mukulsharma877/smartwatches-solved,Smartwatches - Solved,Mukul Kumar Sharma,2023-03-24 03:37:28,,,8
+arnabchaki/fitness-trackers-products-ecommerce,mitrajitkamble/fitness-trackers-products-ecommerce,Fitness-Trackers-Products-Ecommerce,Mitrajit Kamble,2023-03-25 16:09:34,,,7
+stefancomanita/hourly-electricity-consumption-and-production,stefancomanita/electricity-consumption-production-visualization,Electricity Consumption & Production Visualization,Stefan Comanita,2023-03-30 23:42:04,,,32
+stefancomanita/hourly-electricity-consumption-and-production,arghyabanerjee17/electricity-consumption-eda-visualization,Electricity Consumption EDA & Visualization,Arghya Banerjee,2023-03-20 07:47:34,,,11
+aksahaha/crop-recommendation,stpeteishii/crop-suitable-circumstance,Crop Suitable Circumstance,stpete_ishii,2023-03-27 04:52:58,,,8
+aksahaha/crop-recommendation,micaeld/crop-recommendation-visualization-99-acc,Crop Recommendation - Visualization - 99% acc ,Micaeld,2023-03-27 14:56:19,,,7
+noahx1/elden-ring-steam-reviews,nandobb1411/elden-ring-comment-relevance-prediction,Elden ring comment relevance prediction,nandobb1411,2023-04-05 17:00:33,,,6
+rkiattisak/mobile-phone-price,esposte/eda-and-feature-engineering, EDA and Feature Engineering,Esposte,2023-03-21 01:22:00,,,15
+rkiattisak/mobile-phone-price,rkiattisak/starter-for-mobile-phone-price-dataset,Starter for Mobile phone price dataset,Kiattisak Rattanaporn,2023-03-14 09:14:07,,,14
+rajkumarpandey02/list-of-largest-internet-companies,sabirbagwan/largestinternetcompneda,LargestInternetCompnEDA,Sabir Bagwan,2023-03-22 04:07:26,,,2
+rajkumarpandey02/list-of-largest-internet-companies,jacobperschbacher/largest-internet-companies,Largest Internet Companies,Jacob Perschbacher,2023-03-24 19:44:10,,,0
+mirichoi0218/insurance,hely333/eda-regression,EDA + Regression,Dandelion,2018-10-10 21:09:10,,,550
+mirichoi0218/insurance,sudhirnl7/linear-regression-tutorial,Linear Regression Tutorial,Sudhir Kumar,2020-04-04 14:56:45,,,411
+rashikrahmanpritom/heart-attack-analysis-prediction-dataset,namanmanchanda/heart-attack-eda-prediction-90-accuracy,Heart Attack - EDA + Prediction (90% accuracy),Naman Manchanda,2021-05-22 11:44:42,,,365
+rashikrahmanpritom/heart-attack-analysis-prediction-dataset,durgancegaur/a-guide-to-any-classification-problem,A Guide to any Classification Problem,Durgance Gaur,2022-02-15 19:13:48,,,343
+sujaykapadnis/school-shooting-data,docxian/school-shootings,School Shootings,Chris X,2023-03-07 18:06:41,,,15
+sujaykapadnis/school-shooting-data,aslibaraf/eda-with-solution-of-handling-missing-values,EDA With Solution of Handling Missing Values,Himal,2023-03-11 09:16:02,,,12
+uciml/student-alcohol-consumption,kanncaa1/does-alcohol-affect-success,Does Alcohol Affect Success,DATAI,2018-06-03 07:19:43,,,308
+uciml/student-alcohol-consumption,hely333/what-is-the-secret-of-academic-success,What is the secret of academic success?,Dandelion,2018-10-18 20:34:54,,,98
+uciml/sms-spam-collection-dataset,faressayah/natural-language-processing-nlp-for-beginners,Natural Language Processing (NLP) for Beginners,Fares Sayah,2023-02-16 22:12:38,,,462
+uciml/sms-spam-collection-dataset,andreshg/nlp-glove-bert-tf-idf-lstm-explained,"NLP 📝 GloVe, BERT, TF-IDF, LSTM... 📝 Explained",AndresHG,2021-05-10 23:12:42,,,368
+jealousleopard/goodreadsbooks,hoshi7/goodreads-analysis-and-recommending-books,Goodreads: Analysis and Recommending Books. ,Shivam Ralli,2019-08-05 06:17:05,,,356
+jealousleopard/goodreadsbooks,snanilim/book-recommendation-engine,Book Recommendation Engine,nilim,2020-09-19 16:23:26,,,45
+sanutribedi/sms-spam-detection-dataset,joseacortes/detecting-spam-with-different-models,Detecting Spam with different models,Jose A Cortes,2023-03-31 06:26:07,,,0
+uciml/red-wine-quality-cortez-et-al-2009,vishalyo990/prediction-of-quality-of-wine,Prediction of quality of Wine,Vishal Kumar,2018-01-19 14:35:37,,,910
+uciml/red-wine-quality-cortez-et-al-2009,nareshbhat/outlier-the-silent-killer,Outlier!!! The Silent Killer,Naresha Bhat,2021-08-30 07:18:27,,,823
+arshid/iris-flower-dataset,khotijahs1/k-means-clustering-of-iris-dataset,K-Means Clustering of Iris Dataset,Siti Khotijah,2020-08-30 16:00:09,,,104
+arshid/iris-flower-dataset,mahnazarjmand/clustring-model-on-iris-dataset,Clustring model on IRIS dataset,Mahnaz Arjmand,2022-11-25 19:45:54,,,82
+nenamalikah/nlp-ulta-skincare-reviews,nenamalikah/nlp-ulta-skincare-reviews-analysis,NLP: Ulta Skincare Reviews Analysis,Nena Malikah,2023-03-29 18:22:57,,,9
+nenamalikah/nlp-ulta-skincare-reviews,witriokta/sentiment-analysis-with-vader-and-shap,Sentiment Analysis with VADER and SHAP,Witri Oktafiani Sudjadi,2023-04-13 14:28:32,,,4
+justin2028/unemployment-in-america-per-us-state,ilyai332/unemployment-in-america-per-us-state,"😓🏢⚒Unemployment in America, Per US State⚒🏢😓",Ilya Yatsyshin,2023-04-07 22:18:07,,,57
+justin2028/unemployment-in-america-per-us-state,justin2028/unemployment-in-america-per-us-state-code-starter,Unemployment in America Per US State Code Starter,Justin Oh,2023-03-02 07:34:04,,,29
+ulrikthygepedersen/nike-shoes-sales,ulrikthygepedersen/nike-shoes-sales-getting-started,Nike Shoes Sales - Getting Started,Ulrik Thyge Pedersen,2023-03-15 13:09:24,,,3
+warcoder/civil-aviation-accidents,hanzla121/a-century-of-civil-aviation-accidents-trends,A Century of Civil Aviation Accidents:Trends,Muhammad hanzla mehmood,2023-04-24 13:35:00,,,7
+warcoder/civil-aviation-accidents,luisimlauer/aviation-exploratory-analysis,Aviation exploratory analysis,Luis Imlauer,2023-04-27 00:25:19,,,2
+amalab182/property-salesmelbourne-city,chloe912/property-sales-analysis-eda,Property sales Analysis - EDA,Xuan PENG,2023-03-15 18:01:37,,,8
+amalab182/property-salesmelbourne-city,ashokrajuyadav/property-sales-melbourne-city,Property sales:Melbourne city,Ashok Raju Onteru,2023-03-27 09:18:00,,,0
+justin2028/freedom-in-the-world-2013-2022,justin2028/global-freedom-rankings-2013-2022-code-starter,Global Freedom Rankings (2013-2022) Code Starter,Justin Oh,2023-02-19 09:07:45,,,28
+justin2028/freedom-in-the-world-2013-2022,nidhaltijani/exploratory-data-analysis,Exploratory Data Analysis,nidhal tijani,2023-02-19 21:17:54,,,15
+salmane/space-missions-launches,salmane/space-missions-analysis,Space Missions Analysis,Salmane A.,2023-04-07 21:46:32,,,5
+salmane/space-missions-launches,atom1991/space-mission-launches-eda,Space Mission Launches EDA,Vivek Agrawal,2023-04-26 05:07:28,,,2
+sakshigoyal7/credit-card-customers,andreshg/automatic-eda-libraries-comparisson,📊 Automatic EDA Libraries 📚 Comparisson,AndresHG,2021-04-29 20:00:44,,,352
+sakshigoyal7/credit-card-customers,thomaskonstantin/bank-churn-data-exploration-and-churn-prediction,Bank Churn Data Exploration And Churn Prediction,Thomas Konstantin,2021-05-01 06:26:32,,,200
+rohitsahoo/sales-forecasting,ohseokkim/predicting-future-by-lstm-prophet-neural-prophet,"Predicting Future by LSTM, Prophet, Neural Prophet",OH SEOK KIM,2022-02-05 02:21:03,,,110
+rohitsahoo/sales-forecasting,samruddhim/part-1-exploratory-data-analysis,Part 1: Exploratory Data Analysis,Samruddhi Mhatre,2021-01-01 08:55:08,,,83
+thedevastator/drug-performance-evaluation,shubunaga/rna-mlp,RNA MLP,SHUBUNAGA,2023-03-13 23:05:18,,,9
+thedevastator/drug-performance-evaluation,victorferino/drug-performance-evaluation-data-analysis,Drug Performance Evaluation - Data Analysis,Victor Ferino,2023-03-14 23:58:42,,,7
+atharvaingle/crop-recommendation-dataset,ysthehurricane/crop-recommendation-system-using-lightgbm,Crop Recommendation System using LightGBM,Yash Patel,2021-10-03 08:53:57,,,73
+atharvaingle/crop-recommendation-dataset,atharvaingle/what-crop-to-grow,What crop to grow ? 🌾🌾,Atharva Ingle,2022-01-19 05:42:48,,,70
+rajkumarpandey02/list-of-languages-by-total-number-of-speakers,finnheaslop/languages-example-for-beginners,Languages (Example For Beginners),Finnic_Hea,2023-03-01 07:23:23,,,6
+rajkumarpandey02/list-of-languages-by-total-number-of-speakers,jesuisetudiant/languages-by-total-number-of-speakers-analysis,Languages by total number of speakers Analysis,Ali Naqvi,2023-02-28 17:58:48,,,0
+aksahaha/demographic-analysis-of-suicide-death-rates,zazaucd/simple-visual-plots-to-visualise-the-dataset,Simple Visual Plots to Visualise the Dataset,Zaur Gouliev,2023-03-11 17:15:54,,,4
+aksahaha/demographic-analysis-of-suicide-death-rates,arvindkhoda/demographic-analysis-data-cleaning,Demographic Analysis(Data Cleaning),Arvind Khoda,2023-03-11 13:45:14,,,1
+uciml/indian-liver-patient-records,sanjames/liver-patients-analysis-prediction-accuracy,"Liver Patients Analysis, prediction & accuracy",Sangeetha James,2018-02-27 16:08:13,,,87
+uciml/indian-liver-patient-records,michalbrezk/xgboost-classifier-and-hyperparameter-tuning-85,XGBoost classifier and hyperparameter tuning [85%],Michal Brezak,2020-11-09 06:55:29,,,61
